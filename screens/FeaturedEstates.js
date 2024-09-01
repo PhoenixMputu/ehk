@@ -7,42 +7,14 @@ import { category, facilities, featuredEstates, ratings } from '../data';
 import NotFoundCard from '../components/NotFoundCard';
 import RBSheet from "react-native-raw-bottom-sheet";
 import Button from '../components/Button';
-import { useTheme } from '../theme/ThemeProvider';
-import MultiSlider from '@ptomasroos/react-native-multi-slider';
-import { FontAwesome } from "@expo/vector-icons";
 import VerticalEstateCard from '../components/VerticalEstateCard';
 import HorizontalEstateCard from '../components/HorizontalEstateCard';
 
-// Handler slider
-const CustomSliderHandle = ({ enabled, markerStyle }) => {
-    return (
-        <View
-            style={[
-                markerStyle,
-                {
-                    backgroundColor: enabled ? COLORS.primary : 'lightgray',
-                    borderColor: 'white',
-                    borderWidth: 2,
-                    borderRadius: 10,
-                    width: 20,
-                    height: 20,
-                },
-            ]}
-        />
-    );
-};
-
 const FeaturedEstates = ({ navigation }) => {
     const refRBSheet = useRef();
-    const { dark, colors } = useTheme();
     const [selectedCategories, setSelectedCategories] = useState(["1"]);
     const [selectedRating, setSelectedRating] = useState(["1"]);
     const [selectedFacilities, setSelectedFacilities] = useState([]);
-    const [priceRange, setPriceRange] = useState([0, 100]); // Initial price range
-
-    const handleSliderChange = (values) => {
-        setPriceRange(values);
-    };
     /**
     * Render header
     */
@@ -56,25 +28,16 @@ const FeaturedEstates = ({ navigation }) => {
                             source={icons.back}
                             resizeMode='contain'
                             style={[styles.backIcon, {
-                                tintColor: dark ? COLORS.white : COLORS.greyscale900
+                                tintColor: COLORS.greyscale900
                             }]}
                         />
                     </TouchableOpacity>
                     <Text style={[styles.headerTitle, {
-                        color: dark ? COLORS.white : COLORS.greyscale900
+                        color: COLORS.greyscale900
                     }]}>
-                        Featured
+                        Nouveauté
                     </Text>
                 </View>
-                <TouchableOpacity>
-                    <Image
-                        source={icons.moreCircle}
-                        resizeMode='contain'
-                        style={[styles.moreIcon, {
-                            tintColor: dark ? COLORS.white : COLORS.greyscale900
-                        }]}
-                    />
-                </TouchableOpacity>
             </View>
         )
     }
@@ -107,7 +70,7 @@ const FeaturedEstates = ({ navigation }) => {
                 <View
                     onPress={() => console.log("Search")}
                     style={[styles.searchBarContainer, {
-                        backgroundColor: dark ? COLORS.dark2 : COLORS.secondaryWhite
+                        backgroundColor: "#fff"
                     }]}>
                     <TouchableOpacity
                         onPress={handleSearch}>
@@ -118,10 +81,10 @@ const FeaturedEstates = ({ navigation }) => {
                         />
                     </TouchableOpacity>
                     <TextInput
-                        placeholder='Search'
-                        placeholderTextColor={COLORS.gray}
+                        placeholder='Trouver un logement'
+                        placeholderTextColor={COLORS.blue}
                         style={[styles.searchInput, {
-                            color: dark ? COLORS.white : COLORS.greyscale900
+                            color: COLORS.blue
                         }]}
                         value={searchQuery}
                         onChangeText={(text) => setSearchQuery(text)}
@@ -139,8 +102,8 @@ const FeaturedEstates = ({ navigation }) => {
 
                 <View style={styles.reusltTabContainer}>
                     <Text style={[styles.tabText, {
-                        color: dark ? COLORS.secondaryWhite : COLORS.black
-                    }]}>{resultsCount} founds</Text>
+                        color: COLORS.black
+                    }]}>{resultsCount} Résultats</Text>
                     <View style={styles.viewDashboard}>
                         <TouchableOpacity
                             onPress={() => {
@@ -171,7 +134,7 @@ const FeaturedEstates = ({ navigation }) => {
                 <View>
                     {/* Estates result list */}
                     <View style={{
-                        backgroundColor: dark ? COLORS.dark1 : COLORS.secondaryWhite,
+                        backgroundColor: "#fff",
                         marginVertical: 16
                     }}>
                         {resultsCount && resultsCount > 0 ? (
@@ -253,45 +216,14 @@ const FeaturedEstates = ({ navigation }) => {
         setSelectedRating(updatedRatings);
     };
 
-    // Function to toggle selected facility
-    const toggleFacility = (facilityId) => {
-        // Check if the facility is already selected
-        if (selectedFacilities.includes(facilityId)) {
-            // If selected, remove it
-            setSelectedFacilities(selectedFacilities.filter(id => id !== facilityId));
-        } else {
-            // If not selected, add it
-            setSelectedFacilities([...selectedFacilities, facilityId]);
-        }
-    };
-
-    const renderFacilitiesItem = ({ item }) => (
-        <TouchableOpacity
-            style={{
-                backgroundColor: selectedFacilities.includes(item.id) ? COLORS.primary : "transparent",
-                padding: 10,
-                marginVertical: 5,
-                borderColor: COLORS.primary,
-                borderWidth: 1.3,
-                borderRadius: 24,
-                marginRight: 12,
-            }}
-            onPress={() => toggleFacility(item.id)}>
-
-            <Text style={{
-                color: selectedFacilities.includes(item.id) ? COLORS.white : COLORS.primary
-            }}>{item.name}</Text>
-        </TouchableOpacity>
-    );
-
     // Category item
     const renderCategoryItem = ({ item }) => (
         <TouchableOpacity
             style={{
-                backgroundColor: selectedCategories.includes(item.id) ? COLORS.primary : "transparent",
+                backgroundColor: selectedCategories.includes(item.id) ? COLORS.white : COLORS.primary,
                 padding: 10,
                 marginVertical: 5,
-                borderColor: COLORS.primary,
+                borderColor: COLORS.white,
                 borderWidth: 1.3,
                 borderRadius: 24,
                 marginRight: 12,
@@ -299,7 +231,7 @@ const FeaturedEstates = ({ navigation }) => {
             onPress={() => toggleCategory(item.id)}>
 
             <Text style={{
-                color: selectedCategories.includes(item.id) ? COLORS.white : COLORS.primary
+                color: selectedCategories.includes(item.id) ? COLORS.blue : COLORS.white
             }}>{item.name}</Text>
         </TouchableOpacity>
     );
@@ -307,7 +239,7 @@ const FeaturedEstates = ({ navigation }) => {
     const renderRatingItem = ({ item }) => (
         <TouchableOpacity
             style={{
-                backgroundColor: selectedRating.includes(item.id) ? COLORS.primary : "transparent",
+                backgroundColor: selectedRating.includes(item.id) ? COLORS.white : COLORS.primary,
                 paddingHorizontal: 16,
                 paddingVertical: 6,
                 marginVertical: 5,
@@ -319,18 +251,15 @@ const FeaturedEstates = ({ navigation }) => {
                 alignItems: "center",
             }}
             onPress={() => toggleRating(item.id)}>
-            <View style={{ marginRight: 6 }}>
-                <FontAwesome name="star" size={14} color={selectedRating.includes(item.id) ? COLORS.white : COLORS.primary} />
-            </View>
             <Text style={{
-                color: selectedRating.includes(item.id) ? COLORS.white : COLORS.primary
+                color: selectedRating.includes(item.id) ? COLORS.primary : COLORS.white
             }}>{item.title}</Text>
         </TouchableOpacity>
     );
 
     return (
-        <SafeAreaView style={[styles.area, { backgroundColor: colors.background }]}>
-            <View style={[styles.container, { backgroundColor: colors.background }]}>
+        <SafeAreaView style={[styles.area, { backgroundColor: "#fff" }]}>
+            <View style={[styles.container, { backgroundColor: "#fff" }]}>
                 {renderHeader()}
                 <ScrollView showsVerticalScrollIndicator={false}>
                     {renderContent()}
@@ -339,31 +268,31 @@ const FeaturedEstates = ({ navigation }) => {
                     ref={refRBSheet}
                     closeOnDragDown={true}
                     closeOnPressMask={false}
-                    height={580}
+                    height={480}
                     customStyles={{
                         wrapper: {
                             backgroundColor: "rgba(0,0,0,0.5)",
                         },
                         draggableIcon: {
-                            backgroundColor: dark ? COLORS.dark3 : "#000",
+                            backgroundColor: COLORS.dark3,
                         },
                         container: {
                             borderTopRightRadius: 32,
                             borderTopLeftRadius: 32,
-                            height: 580,
-                            backgroundColor: dark ? COLORS.dark2 : COLORS.white,
+                            height: 480,
+                            backgroundColor: COLORS.blue,
                             alignItems: "center",
                         }
                     }}
                 >
                     <Text style={[styles.bottomTitle, {
-                        color: dark ? COLORS.white : COLORS.greyscale900
-                    }]}>Filter</Text>
+                        color: COLORS.white
+                    }]}>Filtre</Text>
                     <View style={styles.separateLine} />
                     <View style={{ width: SIZES.width - 32 }}>
                         <Text style={[styles.sheetTitle, {
-                            color: dark ? COLORS.white : COLORS.greyscale900
-                        }]}>Category</Text>
+                            color: COLORS.white
+                        }]}>Catégorie</Text>
                         <FlatList
                             data={category}
                             keyExtractor={item => item.id}
@@ -372,40 +301,18 @@ const FeaturedEstates = ({ navigation }) => {
                             renderItem={renderCategoryItem}
                         />
                         <Text style={[styles.sheetTitle, {
-                            color: dark ? COLORS.white : COLORS.greyscale900
-                        }]}>Filter</Text>
-                        <MultiSlider
-                            values={priceRange}
-                            sliderLength={SIZES.width - 32}
-                            onValuesChange={handleSliderChange}
-                            min={0}
-                            max={100}
-                            step={1}
-                            allowOverlap={false}
-                            snapped
-                            minMarkerOverlapDistance={40}
-                            customMarker={CustomSliderHandle}
-                            selectedStyle={{ backgroundColor: COLORS.primary }}
-                            unselectedStyle={{ backgroundColor: 'lightgray' }}
-                            containerStyle={{ height: 40 }}
-                            trackStyle={{ height: 3 }}
-                        />
-
-                        <Text style={[styles.sheetTitle, {
-                            color: dark ? COLORS.white : COLORS.greyscale900
-                        }]}>Facilities</Text>
-
+                            color: COLORS.white
+                        }]}>Ville</Text>
                         <FlatList
-                            data={facilities}
+                            data={ratings}
                             keyExtractor={item => item.id}
                             showsHorizontalScrollIndicator={false}
                             horizontal
-                            renderItem={renderFacilitiesItem}
+                            renderItem={renderRatingItem}
                         />
-
                         <Text style={[styles.sheetTitle, {
-                            color: dark ? COLORS.white : COLORS.greyscale900
-                        }]}>Rating</Text>
+                            color: COLORS.white
+                        }]}>Type</Text>
                         <FlatList
                             data={ratings}
                             keyExtractor={item => item.id}
@@ -419,18 +326,18 @@ const FeaturedEstates = ({ navigation }) => {
 
                     <View style={styles.bottomContainer}>
                         <Button
-                            title="Reset"
+                            title="Annuler"
                             style={{
                                 width: (SIZES.width - 32) / 2 - 8,
-                                backgroundColor: dark ? COLORS.dark3 : COLORS.tansparentPrimary,
+                                backgroundColor: COLORS.white,
                                 borderRadius: 32,
-                                borderColor: dark ? COLORS.dark3 : COLORS.tansparentPrimary
+                                borderColor: COLORS.tansparentPrimary
                             }}
-                            textColor={dark ? COLORS.white : COLORS.primary}
+                            textColor={COLORS.primary}
                             onPress={() => refRBSheet.current.close()}
                         />
                         <Button
-                            title="Filter"
+                            title="Filtrer"
                             filled
                             style={styles.logoutButton}
                             onPress={() => refRBSheet.current.close()}
@@ -480,18 +387,20 @@ const styles = StyleSheet.create({
     },
     searchBarContainer: {
         width: SIZES.width - 32,
-        backgroundColor: COLORS.secondaryWhite,
+        backgroundColor: "#fff",
         padding: 16,
         borderRadius: 12,
         height: 52,
         marginBottom: 16,
         flexDirection: "row",
-        alignItems: "center"
+        alignItems: "center",
+        borderWidth: 1,
+        borderColor: COLORS.blue
     },
     searchIcon: {
         height: 24,
         width: 24,
-        tintColor: COLORS.gray
+        tintColor: "#2563eb"
     },
     searchInput: {
         flex: 1,

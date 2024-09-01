@@ -15,11 +15,11 @@ const SettingsItem = ({ icon, name, onPress, hasArrowRight = true }) => {
                     source={icon}
                     resizeMode='contain'
                     style={[styles.icon, {
-                        tintColor: dark ? COLORS.white : COLORS.greyscale900
+                        tintColor: COLORS.greyscale900
                     }]}
                 />
                 <Text style={[styles.name, {
-                    color: dark ? COLORS.white : COLORS.greyscale900
+                    color: COLORS.greyscale900
                 }]}>{name}</Text>
             </View>
             {
@@ -28,7 +28,7 @@ const SettingsItem = ({ icon, name, onPress, hasArrowRight = true }) => {
                         source={icons.arrowRight}
                         resizeMode='contain'
                         style={[styles.arrowRight, {
-                            tintColor: dark ? COLORS.white : COLORS.greyscale900
+                            tintColor: COLORS.greyscale900
                         }]}
                     />
                 )

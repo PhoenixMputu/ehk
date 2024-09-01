@@ -1,15 +1,13 @@
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import React from 'react';
 import { COLORS, SIZES } from '../constants';
-import { useTheme } from '../theme/ThemeProvider';
 
 const SectionHeader = ({ title, subtitle, onPress }) => {
-    const { dark } = useTheme();
 
     return (
         <View style={styles.container}>
             <Text style={[styles.title, {
-                color: dark ? COLORS.white : COLORS.greyscale900
+                color: COLORS.greyscale900
             }]}>{title}</Text>
             <TouchableOpacity onPress={onPress}>
                 <Text style={styles.subtitle}>{subtitle}</Text>

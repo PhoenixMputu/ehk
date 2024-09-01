@@ -1,76 +1,63 @@
-import { View, Platform, Image, Text } from 'react-native';
-import React from 'react';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { COLORS, FONTS, icons } from '../constants';
-import { Explore, Favourite, Home, Inbox, Profile } from '../screens';
-import { useTheme } from '../theme/ThemeProvider';
+import { View, Platform, Image, Text } from 'react-native'
+import React from 'react'
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
+import { COLORS, FONTS, icons } from '../constants'
+import { Favourite, Home, Inbox, Profile } from '../screens'
+import Entypo from '@expo/vector-icons/Entypo';
 
 const Tab = createBottomTabNavigator()
 
 const BottomTabNavigation = () => {
-    const { dark } = useTheme();
-
     return (
-        <Tab.Navigator screenOptions={{
-            tabBarShowLabel: false,
-            headerShown: false,
-            tabBarStyle: {
-                position: 'absolute',
-                justifyContent: "center",
-                bottom: 0,
-                right: 0,
-                left: 0,
-                elevation: 0,
-                height: Platform.OS === 'ios' ? 90 : 60,
-                backgroundColor: dark ? COLORS.dark1 : COLORS.white,
-                borderTopColor: "transparent",
-            },
-        }}>
+        <Tab.Navigator
+            screenOptions={{
+                tabBarShowLabel: false,
+                headerShown: false,
+                tabBarStyle: {
+                    position: 'absolute',
+                    justifyContent: 'center',
+                    bottom: 0,
+                    right: 0,
+                    left: 0,
+                    elevation: 0,
+                    height: Platform.OS === 'ios' ? 90 : 60,
+                    backgroundColor: COLORS.white,
+                    borderTopColor: 'transparent',
+                },
+            }}
+        >
             <Tab.Screen
                 name="Home"
                 component={Home}
                 options={{
                     tabBarIcon: ({ focused }) => {
                         return (
-                            <View style={{ alignItems: "center" }}>
+                            <View style={{ alignItems: 'center' }}>
                                 <Image
-                                    source={focused ? icons.home : icons.home2Outline}
-                                    resizeMode='contain'
+                                    source={
+                                        focused
+                                            ? icons.home
+                                            : icons.home2Outline
+                                    }
+                                    resizeMode="contain"
                                     style={{
                                         height: 24,
                                         width: 24,
-                                        tintColor: focused ? COLORS.primary : dark ? COLORS.gray3 : COLORS.gray3,
+                                        tintColor: focused
+                                            ? COLORS.primary
+                                            : COLORS.gray3,
                                     }}
                                 />
-                                <Text style={{
-                                    ...FONTS.body4,
-                                    color: focused ? COLORS.primary : dark ? COLORS.gray3 : COLORS.gray3,
-                                }}>Home</Text>
-                            </View>
-                        )
-                    },
-                }}
-            />
-            <Tab.Screen
-                name="Explore"
-                component={Explore}
-                options={{
-                    tabBarIcon: ({ focused }) => {
-                        return (
-                            <View style={{ alignItems: "center" }}>
-                                <Image
-                                    source={focused ? icons.search3 : icons.search3}
-                                    resizeMode='contain'
+                                <Text
                                     style={{
-                                        height: 24,
-                                        width: 24,
-                                        tintColor: focused ? COLORS.primary : dark ? COLORS.gray3 : COLORS.gray3,
+                                        ...FONTS.body4,
+                                        color: focused
+                                            ? COLORS.primary
+                                            : COLORS.gray3,
                                     }}
-                                />
-                                <Text style={{
-                                    ...FONTS.body4,
-                                    color: focused ? COLORS.primary : dark ? COLORS.gray3 : COLORS.gray3,
-                                }}>Explore</Text>
+                                >
+                                    Accueil
+                                </Text>
                             </View>
                         )
                     },
@@ -82,20 +69,28 @@ const BottomTabNavigation = () => {
                 options={{
                     tabBarIcon: ({ focused }) => {
                         return (
-                            <View style={{ alignItems: "center" }}>
+                            <View style={{ alignItems: 'center' }}>
                                 <Image
-                                    source={focused ? icons.heart2 : icons.heart2Outline}
-                                    resizeMode='contain'
+                                    source={icons.add}
+                                    resizeMode="contain"
                                     style={{
                                         height: 24,
                                         width: 24,
-                                        tintColor: focused ? COLORS.primary : dark ? COLORS.gray3 : COLORS.gray3,
+                                        tintColor: focused
+                                            ? COLORS.primary
+                                            : COLORS.gray3,
                                     }}
                                 />
-                                <Text style={{
-                                    ...FONTS.body4,
-                                    color: focused ? COLORS.primary : dark ? COLORS.gray3 : COLORS.gray3,
-                                }}>Favourite</Text>
+                                <Text
+                                    style={{
+                                        ...FONTS.body4,
+                                        color: focused
+                                            ? COLORS.primary
+                                            : COLORS.gray3,
+                                    }}
+                                >
+                                    Ajouter
+                                </Text>
                             </View>
                         )
                     },
@@ -107,20 +102,35 @@ const BottomTabNavigation = () => {
                 options={{
                     tabBarIcon: ({ focused }) => {
                         return (
-                            <View style={{ alignItems: "center" }}>
+                            <View style={{ alignItems: 'center', position: 'relative' }}>
                                 <Image
-                                    source={focused ? icons.chatBubble2 : icons.chatBubble2Outline}
-                                    resizeMode='contain'
+                                    source={
+                                        focused
+                                            ? icons.chatBubble2
+                                            : icons.chatBubble2Outline
+                                    }
+                                    resizeMode="contain"
                                     style={{
                                         height: 24,
                                         width: 24,
-                                        tintColor: focused ? COLORS.primary : dark ? COLORS.gray3 : COLORS.gray3,
+                                        tintColor: focused
+                                            ? COLORS.primary
+                                            : COLORS.gray3,
                                     }}
                                 />
-                                <Text style={{
-                                    ...FONTS.body4,
-                                    color: focused ? COLORS.primary : dark ? COLORS.gray3 : COLORS.gray3,
-                                }}>Inbox</Text>
+                                <Entypo name="dot-single" style={{ position: 'absolute', right: 5, top: -17, tintColor: focused
+                                            ? COLORS.primary
+                                            : COLORS.gray3, }} size={42} color="blue" />
+                                <Text
+                                    style={{
+                                        ...FONTS.body4,
+                                        color: focused
+                                            ? COLORS.primary
+                                            : COLORS.gray3,
+                                    }}
+                                >
+                                    Notifications
+                                </Text>
                             </View>
                         )
                     },
@@ -132,20 +142,30 @@ const BottomTabNavigation = () => {
                 options={{
                     tabBarIcon: ({ focused }) => {
                         return (
-                            <View style={{ alignItems: "center" }}>
+                            <View style={{ alignItems: 'center' }}>
                                 <Image
-                                    source={focused ? icons.user : icons.userOutline}
-                                    resizeMode='contain'
+                                    source={
+                                        focused ? icons.user : icons.userOutline
+                                    }
+                                    resizeMode="contain"
                                     style={{
                                         height: 24,
                                         width: 24,
-                                        tintColor: focused ? COLORS.primary : dark ? COLORS.gray3 : COLORS.gray3,
+                                        tintColor: focused
+                                            ? COLORS.primary
+                                            : COLORS.gray3,
                                     }}
                                 />
-                                <Text style={{
-                                    ...FONTS.body4,
-                                    color: focused ? COLORS.primary : dark ? COLORS.gray3 : COLORS.gray3,
-                                }}>Profile</Text>
+                                <Text
+                                    style={{
+                                        ...FONTS.body4,
+                                        color: focused
+                                            ? COLORS.primary
+                                            : COLORS.gray3,
+                                    }}
+                                >
+                                    Profile
+                                </Text>
                             </View>
                         )
                     },

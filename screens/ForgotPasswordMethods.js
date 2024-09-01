@@ -14,9 +14,9 @@ const ForgotPasswordMethods = ({ navigation }) => {
     setSelectedMethod(method);
   };
   return (
-    <SafeAreaView style={[styles.area, { backgroundColor: colors.background }]}>
-      <View style={[styles.container, { backgroundColor: colors.background }]}>
-        <Header title="Forgot Password" />
+    <SafeAreaView style={[styles.area, { backgroundColor: "#fff" }]}>
+      <View style={[styles.container, { backgroundColor: "#fff" }]}>
+        <Header title="Mot De Passe oublié" />
         <ScrollView showsVerticalScrollIndicator={false}>
           <View style={styles.passwordContainer}>
             <Image

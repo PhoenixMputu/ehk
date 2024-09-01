@@ -2,56 +2,13 @@ import { View, Text, StyleSheet, Image, TouchableOpacity, TextInput, FlatList } 
 import React, { useState } from 'react';
 import { COLORS, SIZES, icons, images } from "../constants";
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useTheme } from '../theme/ThemeProvider';
 import { ScrollView } from 'react-native-virtualized-view';
-import { banners, category, featuredEstates, recommendedEstates } from '../data';
+import { category, featuredEstates, recommendedEstates } from '../data';
 import SectionHeader from '../components/SectionHeader';
 import FeaturedEstateCard from '../components/FeaturedEstateCard';
 import VerticalEstateCard from '../components/VerticalEstateCard';
 
 const Home = ({ navigation }) => {
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const { dark, colors } = useTheme();
-  /**
-   * render header
-   */
-  const renderHeader = () => {
-    return (
-      <View style={styles.headerContainer}>
-        <View style={styles.viewLeft}>
-          <Image
-            source={images.user1}
-            resizeMode='contain'
-            style={styles.userIcon}
-          />
-          <View style={styles.viewNameContainer}>
-            <Text style={styles.greeeting}>Good Morning👋</Text>
-            <Text style={[styles.title, {
-              color: dark ? COLORS.white : COLORS.greyscale900
-            }]}>Andrew Ainsley</Text>
-          </View>
-        </View>
-        <View style={styles.viewRight}>
-          <TouchableOpacity
-            onPress={() => navigation.navigate("Notifications")}>
-            <Image
-              source={icons.notificationBell2}
-              resizeMode='contain'
-              style={[styles.bellIcon, { tintColor: dark ? COLORS.white : COLORS.greyscale900 }]}
-            />
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => navigation.navigate("Favourite")}>
-            <Image
-              source={icons.bookmarkOutline}
-              resizeMode='contain'
-              style={[styles.bookmarkIcon, { tintColor: dark ? COLORS.white : COLORS.greyscale900 }]}
-            />
-          </TouchableOpacity>
-        </View>
-      </View>
-    )
-  }
 
   /**
   * Render search bar
@@ -67,7 +24,7 @@ const Home = ({ navigation }) => {
       <TouchableOpacity
         onPress={() => navigation.navigate("Search")}
         style={[styles.searchBarContainer, {
-          backgroundColor: dark ? COLORS.dark2 : COLORS.secondaryWhite
+          backgroundColor: "#fff"
         }]}>
         <TouchableOpacity>
           <Image
@@ -77,8 +34,8 @@ const Home = ({ navigation }) => {
           />
         </TouchableOpacity>
         <TextInput
-          placeholder='Search'
-          placeholderTextColor={COLORS.gray}
+          placeholder='Trouver un logement'
+          placeholderTextColor={"#3b82f6"}
           style={styles.searchInput}
           onFocus={handleInputFocus}
         />
@@ -93,66 +50,6 @@ const Home = ({ navigation }) => {
     )
   }
 
-  const renderBannerItem = ({ item }) => (
-    <View style={styles.bannerContainer}>
-      <View style={styles.bannerTopContainer}>
-        <View>
-          <Text style={styles.bannerDicount}>{item.discount} OFF</Text>
-          <Text style={styles.bannerDiscountName}>{item.discountName}</Text>
-        </View>
-        <Text style={styles.bannerDiscountNum}>{item.discount}</Text>
-      </View>
-      <View style={styles.bannerBottomContainer}>
-        <Text style={styles.bannerBottomTitle}>{item.bottomTitle}</Text>
-        <Text style={styles.bannerBottomSubtitle}>{item.bottomSubtitle}</Text>
-      </View>
-    </View>
-  );
-
-  const keyExtractor = (item) => item.id.toString();
-
-  const handleEndReached = () => {
-    setCurrentIndex((prevIndex) => (prevIndex + 1) % banners.length);
-  };
-
-  const renderDot = (index) => {
-    return (
-      <View
-        style={[styles.dot, index === currentIndex ? styles.activeDot : null]}
-        key={index}
-      />
-    );
-  };
-
-  /**
-  * Render banner
-  */
-  const renderBanner = () => {
-    return (
-      <View style={styles.bannerItemContainer}>
-        <FlatList
-          data={banners}
-          renderItem={renderBannerItem}
-          keyExtractor={keyExtractor}
-          horizontal
-          pagingEnabled
-          showsHorizontalScrollIndicator={false}
-          onEndReached={handleEndReached}
-          onEndReachedThreshold={0.5}
-          onMomentumScrollEnd={(event) => {
-            const newIndex = Math.round(
-              event.nativeEvent.contentOffset.x / SIZES.width
-            );
-            setCurrentIndex(newIndex);
-          }}
-        />
-        <View style={styles.dotContainer}>
-          {banners.map((_, index) => renderDot(index))}
-        </View>
-      </View>
-    )
-  }
-
   /**
    * render featured estates
    */
@@ -160,8 +57,8 @@ const Home = ({ navigation }) => {
     return (
       <View>
         <SectionHeader
-          title="Featured"
-          subtitle="See All"
+          title="Nouveauté"
+          subtitle="Voir plus"
           onPress={() => navigation.navigate("FeaturedEstates")}
         />
         <FlatList
@@ -173,7 +70,7 @@ const Home = ({ navigation }) => {
             <FeaturedEstateCard
               image={item.image}
               name={item.name}
-              rating={item.rating}
+              rating={'Location'}
               price={item.price}
               location={item.location}
               onPress={() => navigation.navigate("EstateDetails")}
@@ -228,8 +125,8 @@ const Home = ({ navigation }) => {
     return (
       <View>
         <SectionHeader
-          title="Our Recommendation"
-          subtitle="See All"
+          title="Populaires"
+          subtitle="Voir plus"
           onPress={() => navigation.navigate("OurRecommendation")}
         />
         <FlatList
@@ -240,7 +137,7 @@ const Home = ({ navigation }) => {
           renderItem={renderCategoryItem}
         />
         <View style={{
-          backgroundColor: dark ? COLORS.dark1 : COLORS.secondaryWhite,
+          backgroundColor: "#fff",
           marginVertical: 16
         }}>
           <FlatList
@@ -253,7 +150,7 @@ const Home = ({ navigation }) => {
                 <VerticalEstateCard
                   name={item.name}
                   image={item.image}
-                  rating={item.rating}
+                  rating={"Location"}
                   price={item.price}
                   location={item.location}
                   onPress={() => navigation.navigate("EstateDetails")}
@@ -266,12 +163,10 @@ const Home = ({ navigation }) => {
     )
   }
   return (
-    <SafeAreaView style={[styles.area, { backgroundColor: colors.background }]}>
-      <View style={[styles.container, { backgroundColor: colors.background }]}>
-        {renderHeader()}
+    <SafeAreaView style={[styles.area, { backgroundColor: "#fff" }]}>
+      <View style={[styles.container, { backgroundColor: "#fff" }]}>
         <ScrollView showsVerticalScrollIndicator={false}>
           {renderSearchBar()}
-          {renderBanner()}
           {renderFeaturedEstates()}
           {renderOurRecommendationEstates()}
         </ScrollView>
@@ -283,7 +178,8 @@ const Home = ({ navigation }) => {
 const styles = StyleSheet.create({
   area: {
     flex: 1,
-    backgroundColor: COLORS.white
+    backgroundColor: COLORS.white,
+    paddingBottom: 30
   },
   container: {
     flex: 1,
@@ -336,7 +232,9 @@ const styles = StyleSheet.create({
   },
   searchBarContainer: {
     width: SIZES.width - 32,
-    backgroundColor: COLORS.secondaryWhite,
+    backgroundColor: "#fff",
+    borderWidth: 1,
+    borderColor: "#2563eb",
     padding: 16,
     borderRadius: 12,
     height: 52,
@@ -347,7 +245,7 @@ const styles = StyleSheet.create({
   searchIcon: {
     height: 24,
     width: 24,
-    tintColor: COLORS.gray
+    tintColor: "#2563eb"
   },
   searchInput: {
     flex: 1,

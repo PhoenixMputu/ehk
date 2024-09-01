@@ -5,11 +5,9 @@ import Header from '../components/Header';
 import { COLORS } from '../constants';
 import { OtpInput } from "react-native-otp-entry";
 import Button from "../components/Button";
-import { useTheme } from '../theme/ThemeProvider';
 
 const OTPVerification = ({ navigation }) => {
   const [time, setTime] = useState(55);
-  const { colors, dark } = useTheme();
 
   useEffect(() => {
     const intervalId = setInterval(() => {
@@ -22,13 +20,13 @@ const OTPVerification = ({ navigation }) => {
   }, []);
 
   return (
-    <SafeAreaView style={[styles.area, { backgroundColor: colors.background }]}>
-      <View style={[styles.container, { backgroundColor: colors.background }]}>
-        <Header title="Forgot Password" />
+    <SafeAreaView style={[styles.area, { backgroundColor: "#fff" }]}>
+      <View style={[styles.container, { backgroundColor: "#fff" }]}>
+        <Header title="Mot de passe oublié" />
         <ScrollView>
           <Text style={[styles.title, {
-            color: dark ? COLORS.white : COLORS.black
-          }]}>Code has been send to +1 111 ******99</Text>
+            color: COLORS.black
+          }]}>Le code a été envoyé au +1 111 ******99</Text>
           <OtpInput
             numberOfDigits={4}
             onTextChange={(text) => console.log(text)}
@@ -37,26 +35,17 @@ const OTPVerification = ({ navigation }) => {
             onFilled={(text) => console.log(`OTP is ${text}`)}
             theme={{
               pinCodeContainerStyle: {
-                backgroundColor: dark ? COLORS.dark2 : COLORS.secondaryWhite,
-                borderColor: dark ? COLORS.gray : COLORS.secondaryWhite,
+                backgroundColor: COLORS.secondaryWhite,
+                borderColor: COLORS.blue,
                 borderWidth: .4,
                 borderRadius: 10,
                 height: 58,
                 width: 58,
               },
               pinCodeTextStyle: {
-                color: dark ? COLORS.white : COLORS.black,
+                color: COLORS.black,
               }
             }} />
-          <View style={styles.codeContainer}>
-            <Text style={[styles.code, {
-              color: dark ? COLORS.white : COLORS.greyscale900
-            }]}>Resend code in</Text>
-            <Text style={styles.time}>{`  ${time}  `}</Text>
-            <Text style={[styles.code, {
-              color: dark ? COLORS.white : COLORS.greyscale900
-            }]}>s</Text>
-          </View>
         </ScrollView>
         <Button
           title="Verify"

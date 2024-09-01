@@ -22,7 +22,6 @@ const FeaturedEstateCard = ({
                 source={image}>
                 <View style={styles.topHeaderContainer}>
                     <View style={styles.reviewContainer}>
-                        <FontAwesome name="star" size={16} color="orange" />
                         <Text style={styles.rating}>{rating}</Text>
                     </View>
                 </View>
@@ -31,20 +30,13 @@ const FeaturedEstateCard = ({
                     style={styles.bottomContainer}
                     colors={['transparent', 'rgba(0,0,0,0.5)']}
                 >
-                    <Text style={styles.name}>{name.substring(0, 16)}...</Text>
+                    <Text style={styles.name} numberOfLines={1}>{name.substring(0, 16)}...</Text>
                     <Text style={styles.location}>{location}</Text>
                     <View style={styles.bottomPriceContainer}>
                         <View style={styles.priceContainer}>
                             <Text style={styles.price}>${price}</Text>
                             <Text style={styles.durationText}> / night</Text>
                         </View>
-                        <TouchableOpacity onPress={() => setIsFavourite(!isFavourite)}>
-                            <Image
-                                source={isFavourite ? icons.heart2 : icons.heart2Outline}
-                                resizeMode='contain'
-                                style={styles.heartIcon}
-                            />
-                        </TouchableOpacity>
                     </View>
                 </LinearGradient>
             </ImageBackground>
@@ -61,8 +53,8 @@ const styles = StyleSheet.create({
 
     },
     reviewContainer: {
-        width: 54,
-        height: 24,
+        paddingHorizontal: 8,
+        paddingVertical: 4,
         borderRadius: 16,
         backgroundColor: COLORS.transparentWhite,
         zIndex: 999,
@@ -80,7 +72,6 @@ const styles = StyleSheet.create({
         fontSize: 14,
         fontFamily: "semiBold",
         color: COLORS.primary,
-        marginLeft: 4
     },
     bottomContainer: {
         position: "absolute",

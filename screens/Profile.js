@@ -27,18 +27,9 @@ const Profile = ({ navigation }) => {
             style={styles.logo}
           />
           <Text style={[styles.headerTitle, {
-            color: dark ? COLORS.white : COLORS.greyscale900
+            color: COLORS.greyscale900
           }]}>Profile</Text>
         </View>
-        <TouchableOpacity>
-          <Image
-            source={icons.moreCircle}
-            resizeMode='contain'
-            style={[styles.headerIcon, {
-              tintColor: dark ? COLORS.secondaryWhite : COLORS.greyscale900
-            }]}
-          />
-        </TouchableOpacity>
       </TouchableOpacity>
     )
   }
@@ -72,8 +63,8 @@ const Profile = ({ navigation }) => {
             <MaterialIcons name="edit" size={16} color={COLORS.white} />
           </TouchableOpacity>
         </View>
-        <Text style={[styles.title, { color: dark ? COLORS.secondaryWhite : COLORS.greyscale900 }]}>Nathalie Erneson</Text>
-        <Text style={[styles.subtitle, { color: dark ? COLORS.secondaryWhite : COLORS.greyscale900 }]}>nathalie_erneson@gmail.com</Text>
+        <Text style={[styles.title, { color: COLORS.greyscale900 }]}>Nathalie Erneson</Text>
+        <Text style={[styles.subtitle, { color: COLORS.greyscale900 }]}>nathalie_erneson@gmail.com</Text>
       </View>
     )
   }
@@ -92,96 +83,28 @@ const Profile = ({ navigation }) => {
       <View style={styles.settingsContainer}>
         <SettingsItem
           icon={icons.calendar}
-          name="My Booking"
+          name="Mes Logements"
+          onPress={() => navigation.navigate("MyBooking")}
+        />
+        <SettingsItem
+          icon={icons.calendar}
+          name="Mes Reservations"
           onPress={() => navigation.navigate("MyBooking")}
         />
         <SettingsItem
           icon={icons.userOutline}
-          name="Edit Profile"
+          name="Modifier Mon Profile"
           onPress={() => navigation.navigate("EditProfile")}
-        />
-        <SettingsItem
-          icon={icons.bell2}
-          name="Notification"
-          onPress={() => navigation.navigate("SettingsNotifications")}
-        />
-        <SettingsItem
-          icon={icons.wallet2Outline}
-          name="Payment"
-          onPress={() => navigation.navigate("SettingsPayment")}
         />
         <SettingsItem
           icon={icons.shieldOutline}
           name="Security"
           onPress={() => navigation.navigate("SettingsSecurity")}
         />
-        <TouchableOpacity
-          onPress={() => navigation.navigate("SettingsLanguage")}
-          style={styles.settingsItemContainer}>
-          <View style={styles.leftContainer}>
-            <Image
-              source={icons.more}
-              resizeMode='contain'
-              style={[styles.settingsIcon, {
-                tintColor: dark ? COLORS.white : COLORS.greyscale900
-              }]}
-            />
-            <Text style={[styles.settingsName, {
-              color: dark ? COLORS.white : COLORS.greyscale900
-            }]}>Language & Region</Text>
-          </View>
-          <View style={styles.rightContainer}>
-            <Text style={[styles.rightLanguage, {
-              color: dark ? COLORS.white : COLORS.greyscale900
-            }]}>English (US)</Text>
-            <Image
-              source={icons.arrowRight}
-              resizeMode='contain'
-              style={[styles.settingsArrowRight, {
-                tintColor: dark ? COLORS.white : COLORS.greyscale900
-              }]}
-            />
-          </View>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.settingsItemContainer}>
-          <View style={styles.leftContainer}>
-            <Image
-              source={icons.show}
-              resizeMode='contain'
-              style={[styles.settingsIcon, {
-                tintColor: dark ? COLORS.white : COLORS.greyscale900
-              }]}
-            />
-            <Text style={[styles.settingsName, {
-              color: dark ? COLORS.white : COLORS.greyscale900
-            }]}>Dark Mode</Text>
-          </View>
-          <View style={styles.rightContainer}>
-            <Switch
-              value={isDarkMode}
-              onValueChange={toggleDarkMode}
-              thumbColor={isDarkMode ? '#fff' : COLORS.white}
-              trackColor={{ false: '#EEEEEE', true: COLORS.primary }}
-              ios_backgroundColor={COLORS.white}
-              style={styles.switch}
-            />
-          </View>
-        </TouchableOpacity>
         <SettingsItem
           icon={icons.lockedComputerOutline}
-          name="Privacy Policy"
+          name="A Propos De Nous"
           onPress={() => navigation.navigate("SettingsPrivacyPolicy")}
-        />
-        <SettingsItem
-          icon={icons.infoCircle}
-          name="Help Center"
-          onPress={() => navigation.navigate("HelpCenter")}
-        />
-        <SettingsItem
-          icon={icons.people4}
-          name="Invite Friends"
-          onPress={() => navigation.navigate("InviteFriends")}
         />
         <TouchableOpacity
           onPress={() => refRBSheet.current.open()}
@@ -196,15 +119,15 @@ const Profile = ({ navigation }) => {
             />
             <Text style={[styles.logoutName, {
               color: "red"
-            }]}>Logout</Text>
+            }]}>Se Deconnecter</Text>
           </View>
         </TouchableOpacity>
       </View>
     )
   }
   return (
-    <SafeAreaView style={[styles.area, { backgroundColor: colors.background }]}>
-      <View style={[styles.container, { backgroundColor: colors.background }]}>
+    <SafeAreaView style={[styles.area, { backgroundColor: "#fff" }]}>
+      <View style={[styles.container, { backgroundColor: "#fff" }]}>
         {renderHeader()}
         <ScrollView showsVerticalScrollIndicator={false}>
           {renderProfile()}

@@ -48,36 +48,27 @@ const Search = ({ navigation }) => {
     */
     const renderHeader = () => {
         return (
-            <View style={styles.headerContainer}>
-                <View style={styles.headerLeft}>
-                    <TouchableOpacity
-                        onPress={() => navigation.goBack()}>
-                        <Image
-                            source={icons.back}
-                            resizeMode='contain'
-                            style={[styles.backIcon, {
-                                tintColor: dark ? COLORS.white : COLORS.greyscale900
-                            }]}
-                        />
-                    </TouchableOpacity>
-                    <Text style={[styles.headerTitle, {
-                        color: dark ? COLORS.white : COLORS.greyscale900
-                    }]}>
-                        Search
-                    </Text>
-                </View>
-                <TouchableOpacity>
-                    <Image
-                        source={icons.moreCircle}
-                        resizeMode='contain'
-                        style={[styles.moreIcon, {
-                            tintColor: dark ? COLORS.white : COLORS.greyscale900
-                        }]}
-                    />
-                </TouchableOpacity>
+          <View style={styles.headerContainer}>
+            <View style={styles.headerLeft}>
+              <TouchableOpacity
+                onPress={() => navigation.goBack()}>
+                <Image
+                  source={icons.back}
+                  resizeMode='contain'
+                  style={[styles.backIcon, {
+                    tintColor: COLORS.greyscale900
+                  }]}
+                />
+              </TouchableOpacity>
+              <Text style={[styles.headerTitle, {
+                color: COLORS.greyscale900
+              }]}>
+                Rechercher
+              </Text>
             </View>
+          </View>
         )
-    }
+      }
 
     /**
      * Render content
@@ -107,7 +98,7 @@ const Search = ({ navigation }) => {
                 <View
                     onPress={() => console.log("Search")}
                     style={[styles.searchBarContainer, {
-                        backgroundColor: dark ? COLORS.dark2 : COLORS.secondaryWhite
+                        backgroundColor: "#fff"
                     }]}>
                     <TouchableOpacity
                         onPress={handleSearch}>
@@ -118,10 +109,10 @@ const Search = ({ navigation }) => {
                         />
                     </TouchableOpacity>
                     <TextInput
-                        placeholder='Search'
-                        placeholderTextColor={COLORS.gray}
+                        placeholder='Trouver un logement'
+                        placeholderTextColor={COLORS.blue}
                         style={[styles.searchInput, {
-                            color: dark ? COLORS.white : COLORS.greyscale900
+                            color: COLORS.blue
                         }]}
                         value={searchQuery}
                         onChangeText={(text) => setSearchQuery(text)}
@@ -136,10 +127,9 @@ const Search = ({ navigation }) => {
                     </TouchableOpacity>
                 </View>
 
-
                 <View style={styles.reusltTabContainer}>
                     <Text style={[styles.tabText, {
-                        color: dark ? COLORS.secondaryWhite : COLORS.black
+                        color: COLORS.black
                     }]}>{resultsCount} founds</Text>
                     <View style={styles.viewDashboard}>
                         <TouchableOpacity
@@ -171,7 +161,7 @@ const Search = ({ navigation }) => {
                 <View>
                     {/* Estates result list */}
                     <View style={{
-                        backgroundColor: dark ? COLORS.dark1 : COLORS.secondaryWhite,
+                        backgroundColor: "#fff",
                         marginVertical: 16
                     }}>
                         {resultsCount && resultsCount > 0 ? (
@@ -288,10 +278,10 @@ const Search = ({ navigation }) => {
     const renderCategoryItem = ({ item }) => (
         <TouchableOpacity
             style={{
-                backgroundColor: selectedCategories.includes(item.id) ? COLORS.primary : "transparent",
+                backgroundColor: selectedCategories.includes(item.id) ? COLORS.white : COLORS.primary,
                 padding: 10,
                 marginVertical: 5,
-                borderColor: COLORS.primary,
+                borderColor: COLORS.white,
                 borderWidth: 1.3,
                 borderRadius: 24,
                 marginRight: 12,
@@ -299,7 +289,7 @@ const Search = ({ navigation }) => {
             onPress={() => toggleCategory(item.id)}>
 
             <Text style={{
-                color: selectedCategories.includes(item.id) ? COLORS.white : COLORS.primary
+                color: selectedCategories.includes(item.id) ? COLORS.blue : COLORS.white
             }}>{item.name}</Text>
         </TouchableOpacity>
     );
@@ -307,7 +297,7 @@ const Search = ({ navigation }) => {
     const renderRatingItem = ({ item }) => (
         <TouchableOpacity
             style={{
-                backgroundColor: selectedRating.includes(item.id) ? COLORS.primary : "transparent",
+                backgroundColor: selectedRating.includes(item.id) ? COLORS.white : COLORS.primary,
                 paddingHorizontal: 16,
                 paddingVertical: 6,
                 marginVertical: 5,
@@ -319,18 +309,15 @@ const Search = ({ navigation }) => {
                 alignItems: "center",
             }}
             onPress={() => toggleRating(item.id)}>
-            <View style={{ marginRight: 6 }}>
-                <FontAwesome name="star" size={14} color={selectedRating.includes(item.id) ? COLORS.white : COLORS.primary} />
-            </View>
             <Text style={{
-                color: selectedRating.includes(item.id) ? COLORS.white : COLORS.primary
+                color: selectedRating.includes(item.id) ? COLORS.primary : COLORS.white
             }}>{item.title}</Text>
         </TouchableOpacity>
     );
 
     return (
-        <SafeAreaView style={[styles.area, { backgroundColor: colors.background }]}>
-            <View style={[styles.container, { backgroundColor: colors.background }]}>
+        <SafeAreaView style={[styles.area, { backgroundColor: "#fff" }]}>
+            <View style={[styles.container, { backgroundColor: "#fff" }]}>
                 {renderHeader()}
                 <ScrollView showsVerticalScrollIndicator={false}>
                     {renderContent()}
@@ -339,31 +326,31 @@ const Search = ({ navigation }) => {
                     ref={refRBSheet}
                     closeOnDragDown={true}
                     closeOnPressMask={false}
-                    height={580}
+                    height={480}
                     customStyles={{
                         wrapper: {
                             backgroundColor: "rgba(0,0,0,0.5)",
                         },
                         draggableIcon: {
-                            backgroundColor: dark ? COLORS.dark3 : "#000",
+                            backgroundColor: COLORS.dark3,
                         },
                         container: {
                             borderTopRightRadius: 32,
                             borderTopLeftRadius: 32,
-                            height: 580,
-                            backgroundColor: dark ? COLORS.dark2 : COLORS.white,
+                            height: 480,
+                            backgroundColor: COLORS.blue,
                             alignItems: "center",
                         }
                     }}
                 >
                     <Text style={[styles.bottomTitle, {
-                        color: dark ? COLORS.white : COLORS.greyscale900
-                    }]}>Filter</Text>
+                        color: COLORS.white
+                    }]}>Filtre</Text>
                     <View style={styles.separateLine} />
                     <View style={{ width: SIZES.width - 32 }}>
                         <Text style={[styles.sheetTitle, {
-                            color: dark ? COLORS.white : COLORS.greyscale900
-                        }]}>Category</Text>
+                            color: COLORS.white
+                        }]}>Catégorie</Text>
                         <FlatList
                             data={category}
                             keyExtractor={item => item.id}
@@ -372,40 +359,18 @@ const Search = ({ navigation }) => {
                             renderItem={renderCategoryItem}
                         />
                         <Text style={[styles.sheetTitle, {
-                            color: dark ? COLORS.white : COLORS.greyscale900
-                        }]}>Filter</Text>
-                        <MultiSlider
-                            values={priceRange}
-                            sliderLength={SIZES.width - 32}
-                            onValuesChange={handleSliderChange}
-                            min={0}
-                            max={100}
-                            step={1}
-                            allowOverlap={false}
-                            snapped
-                            minMarkerOverlapDistance={40}
-                            customMarker={CustomSliderHandle}
-                            selectedStyle={{ backgroundColor: COLORS.primary }}
-                            unselectedStyle={{ backgroundColor: 'lightgray' }}
-                            containerStyle={{ height: 40 }}
-                            trackStyle={{ height: 3 }}
-                        />
-
-                        <Text style={[styles.sheetTitle, {
-                            color: dark ? COLORS.white : COLORS.greyscale900
-                        }]}>Facilities</Text>
-
+                            color: COLORS.white
+                        }]}>Ville</Text>
                         <FlatList
-                            data={facilities}
+                            data={ratings}
                             keyExtractor={item => item.id}
                             showsHorizontalScrollIndicator={false}
                             horizontal
-                            renderItem={renderFacilitiesItem}
+                            renderItem={renderRatingItem}
                         />
-
                         <Text style={[styles.sheetTitle, {
-                            color: dark ? COLORS.white : COLORS.greyscale900
-                        }]}>Rating</Text>
+                            color: COLORS.white
+                        }]}>Type</Text>
                         <FlatList
                             data={ratings}
                             keyExtractor={item => item.id}
@@ -419,18 +384,18 @@ const Search = ({ navigation }) => {
 
                     <View style={styles.bottomContainer}>
                         <Button
-                            title="Reset"
+                            title="Annuler"
                             style={{
                                 width: (SIZES.width - 32) / 2 - 8,
-                                backgroundColor: dark ? COLORS.dark3 : COLORS.tansparentPrimary,
+                                backgroundColor: COLORS.white,
                                 borderRadius: 32,
-                                borderColor: dark ? COLORS.dark3 : COLORS.tansparentPrimary
+                                borderColor: COLORS.tansparentPrimary
                             }}
-                            textColor={dark ? COLORS.white : COLORS.primary}
+                            textColor={COLORS.primary}
                             onPress={() => refRBSheet.current.close()}
                         />
                         <Button
-                            title="Filter"
+                            title="Filtrer"
                             filled
                             style={styles.logoutButton}
                             onPress={() => refRBSheet.current.close()}
@@ -486,12 +451,14 @@ const styles = StyleSheet.create({
         height: 52,
         marginBottom: 16,
         flexDirection: "row",
-        alignItems: "center"
+        alignItems: "center",
+        borderWidth: 1,
+        borderColor: COLORS.blue
     },
     searchIcon: {
         height: 24,
         width: 24,
-        tintColor: COLORS.gray
+        tintColor: "#2563eb"
     },
     searchInput: {
         flex: 1,

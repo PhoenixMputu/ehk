@@ -8,7 +8,6 @@ import { validateInput } from '../utils/actions/formActions';
 import Input from '../components/Input';
 import Checkbox from 'expo-checkbox';
 import Button from '../components/Button';
-import { useTheme } from '../theme/ThemeProvider';
 
 const isTestMode = true;
 
@@ -26,7 +25,6 @@ const ForgotPasswordEmail = ({ navigation }) => {
     const [formState, dispatchFormState] = useReducer(reducer, initialState);
     const [error, setError] = useState(null);
     const [isChecked, setChecked] = useState(false);
-    const { colors, dark } = useTheme();
 
     const inputChangedHandler = useCallback(
         (inputId, inputValue) => {
@@ -43,9 +41,9 @@ const ForgotPasswordEmail = ({ navigation }) => {
     }, [error])
 
     return (
-        <SafeAreaView style={[styles.area, { backgroundColor: colors.background }]}>
-            <View style={[styles.container, { backgroundColor: colors.background }]}>
-                <Header title="Forgot Password" />
+        <SafeAreaView style={[styles.area, { backgroundColor: "#fff" }]}>
+            <View style={[styles.container, { backgroundColor: "#fff" }]}>
+                <Header title="Mot De Passe Oublié" />
                 <ScrollView style={{ marginVertical: 54 }} showsVerticalScrollIndicator={false}>
                     <View style={styles.logoContainer}>
                         <Image
@@ -55,14 +53,14 @@ const ForgotPasswordEmail = ({ navigation }) => {
                         />
                     </View>
                     <Text style={[styles.title, {
-                        color: dark ? COLORS.white : COLORS.black
-                    }]}>Enter to Your Email</Text>
+                        color: COLORS.black
+                    }]}>Entrer Votre Email</Text>
                     <Input
                         id="email"
                         onInputChanged={inputChangedHandler}
                         errorText={formState.inputValidities['email']}
                         placeholder="Email"
-                        placeholderTextColor={dark ? COLORS.grayTie : COLORS.black}
+                        placeholderTextColor={COLORS.black}
                         icon={icons.email}
                         keyboardType="email-address"
                     />
@@ -71,33 +69,31 @@ const ForgotPasswordEmail = ({ navigation }) => {
                             <Checkbox
                                 style={styles.checkbox}
                                 value={isChecked}
-                                color={isChecked ? COLORS.primary : dark ? COLORS.primary : "gray"}
+                                color="gray"
                                 onValueChange={setChecked}
                             />
                             <View style={{ flex: 1 }}>
-                                <Text style={[styles.privacy, {
-                                    color: dark ? COLORS.white : COLORS.black
-                                }]}>Remenber me</Text>
+                                <Text style={[styles.privacy, {color: COLORS.black}]}>Se souvenir de moi</Text>
                             </View>
                         </View>
                     </View>
                     <Button
-                        title="Reset Password"
+                        title="Modifier le Mot De Passe"
                         filled
                         onPress={() => navigation.navigate("OTPVerification")}
                         style={styles.button}
                     />
                     <TouchableOpacity
                         onPress={() => navigation.navigate("Login")}>
-                        <Text style={styles.forgotPasswordBtnText}>Remenber the password?</Text>
+                        <Text style={styles.forgotPasswordBtnText}>Je me souviens du mot de passe ?</Text>
                     </TouchableOpacity>
                     <View>
                     </View>
                 </ScrollView>
                 <View style={styles.bottomContainer}>
                     <Text style={[styles.bottomLeft, {
-                        color: dark ? COLORS.white : COLORS.black
-                    }]}>Don't have an account ?</Text>
+                        color: COLORS.black
+                    }]}>Je n'ai pas de compte ?</Text>
                     <TouchableOpacity
                         onPress={() => navigation.navigate("Signup")}>
                         <Text style={styles.bottomRight}>{"  "}Sign Up</Text>

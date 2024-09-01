@@ -1,13 +1,18 @@
-import { View, Text, TouchableOpacity, Image, FlatList, StyleSheet } from 'react-native';
-import React from 'react';
-import { messsagesData } from '../data';
-import { COLORS, SIZES } from '../constants';
-import { useNavigation } from '@react-navigation/native';
-import { useTheme } from '../theme/ThemeProvider';
+import {
+    View,
+    Text,
+    TouchableOpacity,
+    Image,
+    FlatList,
+    StyleSheet,
+} from 'react-native'
+import React from 'react'
+import { messsagesData } from '../data'
+import { COLORS, SIZES } from '../constants'
+import { useNavigation } from '@react-navigation/native'
 
 const Chats = () => {
-    const navigation = useNavigation();
-    const { dark } = useTheme();
+    const navigation = useNavigation()
 
     const renderItem = ({ item, index }) => (
         <TouchableOpacity
@@ -17,16 +22,8 @@ const Chats = () => {
                     userName: item.fullName,
                 })
             }
-            style={[
-                styles.userContainer, {
-                    borderBottomWidth: dark ? 0 : 1,
-                },
-                index % 2 !== 0 ? {
-                    backgroundColor: dark ? COLORS.dark1 : COLORS.tertiaryWhite,
-                    borderBottomWidth: dark ? 0 : 1,
-                    borderTopWidth: dark ? 0 : 0
-                } : null,
-            ]}>
+            style={styles.userContainer}
+        >
             <View style={styles.userImageContainer}>
                 {item.isOnline && item.isOnline === true && (
                     <View style={styles.onlineIndicator} />
@@ -38,45 +35,47 @@ const Chats = () => {
                     style={styles.userImage}
                 />
             </View>
-            <View style={{ flexDirection: "row", width: SIZES.width - 104 }}>
+            <View style={{ flexDirection: 'row', width: SIZES.width - 104 }}>
                 <View style={[styles.userInfoContainer]}>
-                    <Text style={[styles.userName, {
-                        color: dark ? COLORS.white : COLORS.black
-                    }]}>{item.fullName}</Text>
-                    <Text style={styles.lastSeen}>{item.lastMessage}</Text>
-                </View>
-                <View style={{
-                    position: "absolute",
-                    right: 4,
-                    alignItems: "center"
-                }}>
-                    <Text style={[styles.lastMessageTime, {
-                        color: dark ? COLORS.white : COLORS.black
-                    }]}>{item.lastMessageTime}</Text>
-                    <View>
-                        {
-                            item.messageInQueue > 0 && (
-                                <TouchableOpacity style={{
-                                    width: 20,
-                                    height: 20,
-                                    borderRadius: 999,
-                                    alignItems: "center",
-                                    justifyContent: "center",
-                                    backgroundColor: item.messageInQueue ? COLORS.primary : "transparent",
-                                    marginTop: 12
-                                }}>
-                                    <Text style={[styles.messageInQueue]}>{`${item.messageInQueue}`}</Text>
-                                </TouchableOpacity>
-                            )
-                        }
+                    <View
+                        style={{
+                            flexDirection: 'row',
+                            width: '100%',
+                            justifyContent: 'space-between',
+                        }}
+                    >
+                        <Text
+                            style={[
+                                styles.userName,
+                                {
+                                    color: COLORS.black,
+                                },
+                            ]}
+                        >
+                            {item.fullName}
+                        </Text>
+                        <Text
+                            style={[
+                                styles.lastMessageTime,
+                                {
+                                    color: COLORS.black,
+                                    marginRight: 10,
+                                },
+                            ]}
+                        >
+                            {item.lastMessageTime}
+                        </Text>
                     </View>
+                    <Text numberOfLines={2} style={styles.lastSeen}>
+                        {item.lastMessage}
+                    </Text>
                 </View>
             </View>
         </TouchableOpacity>
-    );
+    )
 
     return (
-        <View>
+        <View style={{ paddingBottom: 50 }}>
             <FlatList
                 data={messsagesData}
                 showsVerticalScrollIndicator={false}
@@ -93,17 +92,17 @@ const styles = StyleSheet.create({
         width: 40,
         borderRadius: 999,
         backgroundColor: COLORS.white,
-        alignItems: "center",
-        justifyContent: "center"
+        alignItems: 'center',
+        justifyContent: 'center',
     },
     notiContainer: {
-        alignItems: "center",
-        justifyContent: "center",
+        alignItems: 'center',
+        justifyContent: 'center',
         height: 16,
         width: 16,
         borderRadius: 999,
         backgroundColor: COLORS.red,
-        position: "absolute",
+        position: 'absolute',
         top: 1,
         right: 1,
         zIndex: 999,
@@ -111,12 +110,12 @@ const styles = StyleSheet.create({
     notiText: {
         fontSize: 10,
         color: COLORS.white,
-        fontFamily: "medium"
+        fontFamily: 'medium',
     },
     headerTitle: {
         fontSize: 22,
-        fontFamily: "bold",
-        color: COLORS.black
+        fontFamily: 'bold',
+        color: COLORS.black,
     },
     searchBar: {
         flexDirection: 'row',
@@ -139,8 +138,7 @@ const styles = StyleSheet.create({
         width: '100%',
         flexDirection: 'row',
         alignItems: 'center',
-        borderBottomColor: COLORS.secondaryWhite,
-        borderBottomWidth: 1,
+        padding: 3,
     },
     oddBackground: {
         backgroundColor: COLORS.tertiaryWhite,
@@ -172,22 +170,23 @@ const styles = StyleSheet.create({
     userName: {
         fontSize: 14,
         color: COLORS.black,
-        fontFamily: "bold",
+        fontFamily: 'bold',
         marginBottom: 4,
     },
     lastSeen: {
         fontSize: 14,
-        color: "gray",
+        color: 'gray',
+        marginRight: 30,
     },
     lastMessageTime: {
         fontSize: 12,
-        fontFamily: "regular"
+        fontFamily: 'regular',
     },
     messageInQueue: {
         fontSize: 12,
-        fontFamily: "regular",
-        color: COLORS.white
-    }
-});
+        fontFamily: 'regular',
+        color: COLORS.white,
+    },
+})
 
 export default Chats

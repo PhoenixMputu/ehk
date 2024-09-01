@@ -4,6 +4,7 @@ const onboarding3 = require("../assets/images/onboarding3.png");
 const onboarding4 = require("../assets/images/onboarding4.png");
 const ornament = require("../assets/images/ornament.png");
 const logo = require("../assets/images/logo.png");
+const logo_EHK = require("../assets/images/Logo_EHK.png");
 
 const user1 = require("../assets/images/users/user1.jpeg");
 const user2 = require("../assets/images/users/user2.jpeg");
@@ -77,6 +78,7 @@ export default {
     onboarding4,
     ornament,
     logo,
+    logo_EHK,
 
     user1,
     user2,

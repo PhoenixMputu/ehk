@@ -1,7 +1,7 @@
 import { View, Text, StyleSheet, ScrollView, Image, Alert, TouchableOpacity } from 'react-native';
 import React, { useCallback, useEffect, useReducer, useState } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { COLORS, SIZES, icons, images } from '../constants';
+import { COLORS, SIZES, icons, images, logo_EHK } from '../constants';
 import Header from '../components/Header';
 import { reducer } from '../utils/reducers/formReducers';
 import { validateInput } from '../utils/actions/formActions';
@@ -64,23 +64,23 @@ const Login = ({ navigation }) => {
 
   return (
     <SafeAreaView style={[styles.area, {
-      backgroundColor: colors.background
+      backgroundColor: "#fff"
     }]}>
       <View style={[styles.container, {
-        backgroundColor: colors.background
+        backgroundColor: "#fff"
       }]}>
         <Header />
         <ScrollView showsVerticalScrollIndicator={false}>
           <View style={styles.logoContainer}>
             <Image
-              source={images.logo}
+              source={images.logo_EHK}
               resizeMode='contain'
               style={styles.logo}
             />
           </View>
           <Text style={[styles.title, {
-            color: dark ? COLORS.white : COLORS.black
-          }]}>Login to Your Account</Text>
+            color: "#000"
+          }]}>Se connecter</Text>
           <Input
             id="email"
             onInputChanged={inputChangedHandler}
@@ -95,63 +95,29 @@ const Login = ({ navigation }) => {
             errorText={formState.inputValidities['password']}
             autoCapitalize="none"
             id="password"
-            placeholder="Password"
+            placeholder="Mot de passe"
             placeholderTextColor={dark ? COLORS.grayTie : COLORS.black}
             icon={icons.padlock}
             secureTextEntry={true}
           />
-          <View style={styles.checkBoxContainer}>
-            <View style={{ flexDirection: 'row' }}>
-              <Checkbox
-                style={styles.checkbox}
-                value={isChecked}
-                color={isChecked ? COLORS.primary : dark ? COLORS.primary : "gray"}
-                onValueChange={setChecked}
-              />
-              <View style={{ flex: 1 }}>
-                <Text style={[styles.privacy, {
-                  color: dark ? COLORS.white : COLORS.black
-                }]}>Remenber me</Text>
-              </View>
-            </View>
-          </View>
           <Button
-            title="Login"
+            title="Se connecter"
             filled
             onPress={() => navigation.navigate("Main")}
             style={styles.button}
           />
           <TouchableOpacity
-            onPress={() => navigation.navigate("ForgotPasswordMethods")}>
-            <Text style={styles.forgotPasswordBtnText}>Forgot the password?</Text>
+            onPress={() => navigation.navigate("ForgotPasswordEmail")}>
+            <Text style={styles.forgotPasswordBtnText}>Mot de passe oublié ?</Text>
           </TouchableOpacity>
-          <View>
-
-            <OrSeparator text="or continue with" />
-            <View style={styles.socialBtnContainer}>
-              <SocialButton
-                icon={icons.appleLogo}
-                onPress={appleAuthHandler}
-                tintColor={dark ? COLORS.white : COLORS.black}
-              />
-              <SocialButton
-                icon={icons.facebook}
-                onPress={facebookAuthHandler}
-              />
-              <SocialButton
-                icon={icons.google}
-                onPress={googleAuthHandler}
-              />
-            </View>
-          </View>
         </ScrollView>
         <View style={styles.bottomContainer}>
           <Text style={[styles.bottomLeft, {
-            color: dark ? COLORS.white : COLORS.black
-          }]}>Don't have an account ?</Text>
+            color: COLORS.black
+          }]}>J'ai pas de compte ?</Text>
           <TouchableOpacity
             onPress={() => navigation.navigate("Signup")}>
-            <Text style={styles.bottomRight}>{"  "}Sign Up</Text>
+            <Text style={styles.bottomRight}>{"  "}S'inscrire</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -197,37 +163,6 @@ const styles = StyleSheet.create({
     textAlign: "center",
     marginBottom: 22
   },
-  checkBoxContainer: {
-    flexDirection: "row",
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginVertical: 18,
-  },
-  checkbox: {
-    marginRight: 8,
-    height: 16,
-    width: 16,
-    borderRadius: 4,
-    borderColor: COLORS.primary,
-    borderWidth: 2,
-  },
-  privacy: {
-    fontSize: 12,
-    fontFamily: "regular",
-    color: COLORS.black,
-  },
-  socialTitle: {
-    fontSize: 19.25,
-    fontFamily: "medium",
-    color: COLORS.black,
-    textAlign: "center",
-    marginVertical: 26
-  },
-  socialBtnContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-  },
   bottomContainer: {
     flexDirection: "row",
     alignItems: "center",
@@ -249,7 +184,7 @@ const styles = StyleSheet.create({
     color: COLORS.primary
   },
   button: {
-    marginVertical: 6,
+    marginVertical: 12,
     width: SIZES.width - 32,
     borderRadius: 30
   },

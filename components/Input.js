@@ -25,8 +25,8 @@ const Input = (props) => {
         style={[
           styles.inputContainer,
           {
-            borderColor: isFocused ? COLORS.primary : dark ? COLORS.dark2 : COLORS.greyscale500,
-            backgroundColor: isFocused ? COLORS.tansparentPrimary : dark ? COLORS.dark2 : COLORS.greyscale500,
+            borderColor: isFocused ? COLORS.primary : COLORS.greyscale500,
+            backgroundColor: COLORS.tansparentPrimary,
           },
         ]}
       >
@@ -46,7 +46,7 @@ const Input = (props) => {
           onChangeText={onChangeText}
           onFocus={handleFocus}
           onBlur={handleBlur}
-          style={[styles.input, { color: dark ? COLORS.white : COLORS.black }]}
+          style={[styles.input, { color: COLORS.black }]}
           placeholder={props.placeholder}
           placeholderTextColor={props.placeholderTextColor}
           autoCapitalize='none'

@@ -9,6 +9,7 @@ export const COLORS = {
     success: "#0ABE75",
     black: "#181A20",
     black2: "#1D272F",
+    blue: "#2563eb",
     info: "#246BFD",
     warning: "#FACC15",
     error: "#F75555",

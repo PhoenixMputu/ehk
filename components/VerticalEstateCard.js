@@ -1,8 +1,6 @@
 import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
-import React, { useState } from 'react';
+import React from 'react';
 import { COLORS, SIZES, icons } from '../constants';
-import { FontAwesome } from '@expo/vector-icons';
-import { useTheme } from '../theme/ThemeProvider';
 
 const VerticalEstateCard = ({
     name,
@@ -12,14 +10,12 @@ const VerticalEstateCard = ({
     location,
     onPress
 }) => {
-    const [isFavourite, setIsFavourite] = useState(false);
-    const { dark } = useTheme();
 
     return (
         <TouchableOpacity
             onPress={onPress}
             style={[styles.container, {
-                backgroundColor: dark ? COLORS.dark2 : COLORS.white
+                backgroundColor: "#bfdbfe"
             }]}>
             <Image
                 source={image}
@@ -27,29 +23,21 @@ const VerticalEstateCard = ({
                 style={styles.image}
             />
             <View style={styles.reviewContainer}>
-                <FontAwesome name="star" size={12} color="orange" />
                 <Text style={styles.rating}>{rating}</Text>
             </View>
             <Text style={[styles.name, {
-                color: dark ? COLORS.secondaryWhite : COLORS.greyscale900,
-            }]}>{name}</Text>
+                color: "#172554",
+            }]} numberOfLines={2}>{name}</Text>
             <Text style={[styles.location, {
-                color: dark ? COLORS.greyscale300 : COLORS.grayscale700,
+                color: "#1e3a8a",
             }]}>{location}</Text>
             <View style={styles.bottomPriceContainer}>
                 <View style={styles.priceContainer}>
                     <Text style={styles.price}>${price}</Text>
                     <Text style={[styles.durationText, {
-                        color: dark ? COLORS.greyscale300 : COLORS.grayscale700,
+                        color: "#1e3a8a",
                     }]}> / night</Text>
                 </View>
-                <TouchableOpacity onPress={() => setIsFavourite(!isFavourite)}>
-                    <Image
-                        source={isFavourite ? icons.heart2 : icons.heart2Outline}
-                        resizeMode='contain'
-                        style={styles.heartIcon}
-                    />
-                </TouchableOpacity>
             </View>
         </TouchableOpacity>
     )
@@ -72,7 +60,7 @@ const styles = StyleSheet.create({
     name: {
         fontSize: 16,
         fontFamily: "bold",
-        color: COLORS.greyscale900,
+        color: "#172554",
         marginVertical: 4
     },
     location: {
@@ -113,8 +101,9 @@ const styles = StyleSheet.create({
         position: "absolute",
         top: 16,
         right: 16,
-        width: 46,
-        height: 20,
+        width:"auto",
+        paddingHorizontal: 6,
+        paddingVertical: 3,
         borderRadius: 16,
         backgroundColor: COLORS.transparentWhite2,
         zIndex: 999,
@@ -126,7 +115,6 @@ const styles = StyleSheet.create({
         fontSize: 12,
         fontFamily: "semiBold",
         color: COLORS.primary,
-        marginLeft: 4
     },
 })
 

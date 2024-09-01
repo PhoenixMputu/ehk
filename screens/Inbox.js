@@ -4,7 +4,6 @@ import { COLORS, SIZES, icons, images } from '../constants';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
 import { Calls, Chats } from '../tabs';
-import { Feather } from "@expo/vector-icons";
 import { useTheme } from '../theme/ThemeProvider';
 
 const renderScene = SceneMap({
@@ -55,8 +54,8 @@ const Inbox = () => {
             style={styles.headerLogo}
           />
           <Text style={[styles.headerTitle, {
-            color: dark ? COLORS.white : COLORS.greyscale900
-          }]}>Inbox</Text>
+            color: COLORS.greyscale900
+          }]}>Notification</Text>
         </View>
         <View style={styles.headerRight}>
           <TouchableOpacity>
@@ -82,20 +81,10 @@ const Inbox = () => {
     )
   }
   return (
-    <SafeAreaView style={[styles.area, { backgroundColor: colors.background }]}>
-      <View style={[styles.container, { backgroundColor: colors.background }]}>
-        {renderHeader()}
-        <TabView
-          navigationState={{ index, routes }}
-          renderScene={renderScene}
-          onIndexChange={setIndex}
-          initialLayout={{ width: layout.width }}
-          renderTabBar={renderTabBar}
-        />
+    <SafeAreaView style={[styles.area, { backgroundColor: "#fff" }]}>
+      <View style={[styles.container, { backgroundColor: "#fff" }]}>
+        <Chats/>
         {/* Implementing adding post */}
-        <TouchableOpacity style={styles.addPostBtn}>
-          <Feather name="plus" size={24} color={COLORS.white} />
-        </TouchableOpacity>
       </View>
     </SafeAreaView>
   )

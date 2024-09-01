@@ -1,24 +1,13 @@
-import { View, Text, StyleSheet, TouchableOpacity, Image, FlatList, ImageBackground } from 'react-native';
-import React, { useRef, useState } from 'react';
-import { useTheme } from '../theme/ThemeProvider';
-import { COLORS, FONTS, SIZES, icons, images, socials } from '../constants';
+import { View, Text, StyleSheet, TouchableOpacity, Image, Modal, TouchableWithoutFeedback } from 'react-native';
+import React, { useState } from 'react';
+import { COLORS, SIZES, icons, images, illustrations } from '../constants';
 import { StatusBar } from 'expo-status-bar';
 import AutoSlider from '../components/AutoSlider';
 import { ScrollView } from 'react-native-virtualized-view';
-import { FontAwesome } from "@expo/vector-icons";
-import { estateFacilties } from '../data';
-import Facility from '../components/Facility';
-import { LinearGradient } from 'expo-linear-gradient';
-import MapView, { Marker, Callout, PROVIDER_GOOGLE } from 'react-native-maps';
-import { mapDarkStyle, mapStandardStyle } from '../data/mapData';
-import ReviewCard from '../components/ReviewCard';
 import Button from '../components/Button';
-import RBSheet from "react-native-raw-bottom-sheet";
-import SocialIcon from '../components/SocialIcon';
 
 const EstateDetails = ({ navigation }) => {
-  const { dark, colors } = useTheme();
-  const refRBSheet = useRef();
+  const [modalVisible, setModalVisible] = useState(false);
 
   // Slider images
   const sliderImages = [
@@ -29,9 +18,45 @@ const EstateDetails = ({ navigation }) => {
     images.estate5,
   ];
 
+  const renderModal = () => {
+    return (
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}>
+        <TouchableWithoutFeedback
+          onPress={() => setModalVisible(false)}>
+          <View style={[styles.modalContainer]}>
+            <View style={[styles.modalSubContainer, {
+              backgroundColor: COLORS.secondaryWhite
+            }]}>
+              <Image
+                source={illustrations.passwordSuccess}
+                resizeMode='contain'
+                style={styles.modalIllustration}
+              />
+              <Text style={styles.modalTitle}>Félicitations!</Text>
+              <Text style={styles.modalSubtitle}>Votre compte est prêt à être utilisé. Vous serez redirigé vers la page d'accueil dans quelques secondes.</Text>
+              <Button
+                title="Continuer"
+                filled
+                onPress={() => {
+                  setModalVisible(false)
+                }}
+                style={{
+                  width: "100%",
+                  marginTop: 12
+                }}
+              />
+            </View>
+          </View>
+        </TouchableWithoutFeedback>
+      </Modal>
+    )
+  }
+
   // render header
   const renderHeader = () => {
-    const [isFavorite, setIsFavorite] = useState(false);
 
     return (
       <View style={styles.headerContainer}>
@@ -43,26 +68,6 @@ const EstateDetails = ({ navigation }) => {
             style={styles.backIcon}
           />
         </TouchableOpacity>
-
-        <View style={styles.iconContainer}>
-          <TouchableOpacity
-            onPress={() => setIsFavorite(!isFavorite)}>
-            <Image
-              source={isFavorite ? icons.heart2 : icons.heart2Outline}
-              resizeMode='contain'
-              style={styles.bookmarkIcon}
-            />
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.sendIconContainer}
-            onPress={() => refRBSheet.current.open()}>
-            <Image
-              source={icons.send2}
-              resizeMode='contain'
-              style={styles.sendIcon}
-            />
-          </TouchableOpacity>
-        </View>
       </View>
     )
   }
@@ -81,17 +86,11 @@ const EstateDetails = ({ navigation }) => {
     return (
       <View style={styles.contentContainer}>
         <Text style={[styles.estateName, {
-          color: dark ? COLORS.secondaryWhite : COLORS.black,
+          color: COLORS.black,
         }]}>Modernica Apartment</Text>
         <View style={styles.ratingContainer}>
           <View style={styles.categoryContainer}>
             <Text style={styles.categoryName}>Apartment</Text>
-          </View>
-          <View style={styles.numReviewContainer}>
-            <FontAwesome name="star" size={16} color="orange" />
-            <Text style={[styles.rating, {
-              color: dark ? COLORS.secondaryWhite : COLORS.black
-            }]}>{"  "}4.8 (1,275 reviews)</Text>
           </View>
         </View>
 
@@ -105,82 +104,16 @@ const EstateDetails = ({ navigation }) => {
               />
             </View>
             <Text style={[styles.viewTitle, {
-              color: dark ? COLORS.tertiaryWhite : COLORS.black
-            }]}>8 Beds</Text>
-          </View>
-          <View style={styles.viewItemContainer}>
-            <View style={styles.viewItemIcon}>
-              <Image
-                source={icons.bathtub}
-                resizeMode="contain"
-                style={styles.viewIcon}
-              />
-            </View>
-            <Text style={[styles.viewTitle, {
-              color: dark ? COLORS.tertiaryWhite : COLORS.black
-            }]}>3 Bath</Text>
-          </View>
-          <View style={styles.viewItemContainer}>
-            <View style={styles.viewItemIcon}>
-              <Image
-                source={icons.bathtub}
-                resizeMode="contain"
-                style={styles.viewIcon}
-              />
-            </View>
-            <Text style={[styles.viewTitle, {
-              color: dark ? COLORS.tertiaryWhite : COLORS.black
-            }]}>2000 sqft</Text>
-          </View>
-        </View>
-        <View style={[styles.separateLine, {
-          backgroundColor: dark ? COLORS.greyScale800 : COLORS.grayscale200,
-        }]} />
-
-        <View style={styles.userInfoContainer}>
-          <View style={styles.userInfoLeftContainer}>
-            <TouchableOpacity>
-              <Image
-                source={images.user3}
-                resizeMode="cover"
-                style={styles.userImage}
-              />
-            </TouchableOpacity>
-            <View style={{ marginLeft: 12 }}>
-              <Text style={[styles.userName, {
-                color: dark ? COLORS.secondaryWhite : COLORS.black
-              }]}>Natasya Wilodra</Text>
-              <Text style={[styles.userPosition, {
-                color: dark ? COLORS.grayscale400 : COLORS.grayscale700,
-              }]}>Owner</Text>
-            </View>
-          </View>
-          <View style={styles.userInfoRightContainer}>
-            <TouchableOpacity
-              onPress={() => navigation.navigate("Chat")}>
-              <Image
-                source={icons.chatBubble2Outline}
-                resizeMode="contain"
-                style={styles.chatIcon}
-              />
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => navigation.navigate("Call")}
-              style={{ marginLeft: 12 }}>
-              <Image
-                source={icons.telephoneOutline}
-                resizeMode='contain'
-                style={styles.phoneIcon}
-              />
-            </TouchableOpacity>
+              color: COLORS.black
+            }]}>8 Pieces</Text>
           </View>
         </View>
 
         <Text style={[styles.viewSubtitle, {
-          color: dark ? COLORS.secondaryWhite : COLORS.greyscale900,
-        }]}>Overview</Text>
+          color: COLORS.greyscale900,
+        }]}>Apercu</Text>
         <Text style={[styles.description, {
-          color: dark ? COLORS.grayscale400 : COLORS.grayscale700,
+          color: COLORS.grayscale700,
         }]} numberOfLines={expanded ? undefined : 2}>{description}</Text>
         <TouchableOpacity onPress={toggleExpanded}>
           <Text style={styles.viewBtn}>
@@ -189,57 +122,8 @@ const EstateDetails = ({ navigation }) => {
         </TouchableOpacity>
 
         <Text style={[styles.viewSubtitle, {
-          color: dark ? COLORS.secondaryWhite : COLORS.greyscale900,
-        }]}>Facilities</Text>
-        <FlatList
-          data={estateFacilties}
-          keyExtractor={(item, index) => index.toString()}
-          horizontal={false}
-          numColumns={4} // Render two items per row
-          renderItem={({ item, index }) => (
-            <Facility
-              name={item.name}
-              icon={item.icon}
-              iconColor={item.iconColor}
-              backgroundColor={item.backgroundColor}
-            />
-          )}
-        />
-        <View style={styles.subItemContainer}>
-          <Text style={[styles.viewSubtitle, {
-            color: dark ? COLORS.secondaryWhite : COLORS.greyscale900,
-          }]}>Gallery</Text>
-          <TouchableOpacity onPress={() => navigation.navigate("Gallery")}>
-            <Text style={styles.seeAll}>See All</Text>
-          </TouchableOpacity>
-        </View>
-
-        <View style={styles.coverImageContainer}>
-          <Image
-            source={images.estate1}
-            resizeMode='cover'
-            style={styles.coverImage}
-          />
-          <Image
-            source={images.estate2}
-            resizeMode='cover'
-            style={styles.coverImage}
-          />
-          <ImageBackground
-            imageStyle={{ borderRadius: 16 }}
-            style={styles.coverImage}
-            source={images.estate3}>
-            <LinearGradient
-              colors={['rgba(0,0,0,0.8)', 'transparent']}
-              style={styles.gradientImage}>
-              <Text style={styles.numImage}>20+</Text>
-            </LinearGradient>
-          </ImageBackground>
-        </View>
-
-        <Text style={[styles.viewSubtitle, {
-          color: dark ? COLORS.secondaryWhite : COLORS.greyscale900,
-        }]}>Location</Text>
+          color: COLORS.greyscale900,
+        }]}>Localisation</Text>
 
         <View style={styles.estateItemContainer}>
           <Image
@@ -248,87 +132,16 @@ const EstateDetails = ({ navigation }) => {
             style={styles.locationIcon}
           />
           <Text style={[styles.locationText, {
-            color: dark ? COLORS.grayscale400 : COLORS.grayscale700,
+            color: COLORS.grayscale700,
           }]}>6993 Meadow Valley Terrace, New York</Text>
         </View>
-
-        <View style={[styles.locationMapContainer, {
-          backgroundColor: dark ? COLORS.dark1 : COLORS.white,
-        }]}>
-          <MapView
-            style={styles.mapContainer}
-            provider={PROVIDER_GOOGLE}
-            customMapStyle={dark ? mapDarkStyle : mapStandardStyle}
-            userInterfaceStyle="dark"
-            initialRegion={{
-              latitude: 48.8566,
-              longitude: 2.3522,
-              latitudeDelta: 0.0922,
-              longitudeDelta: 0.0421,
-            }}>
-            <Marker
-              coordinate={{
-                latitude: 48.8566,
-                longitude: 2.3522,
-              }}
-              image={icons.mapsOutline}
-              title="Move"
-              description="Address"
-              onPress={() => console.log("Move to another screen")}
-            >
-              <Callout tooltip>
-                <View>
-                  <View style={styles.bubble}>
-                    <Text
-                      style={{
-                        ...FONTS.body4,
-                        fontWeight: 'bold',
-                        color: COLORS.black,
-                      }}
-                    >
-                      User Address
-                    </Text>
-                  </View>
-                  <View style={styles.arrowBorder} />
-                  <View style={styles.arrow} />
-                </View>
-              </Callout>
-            </Marker>
-          </MapView>
-        </View>
-
-        <View style={styles.reviewContainer}>
-          <View style={styles.reviewLeft}>
-            <Image
-              source={icons.star}
-              resizeMode='contain'
-              style={styles.starMiddleIcon}
-            />
-            <Text style={[styles.reviewTitle, {
-              color: dark ? COLORS.white : COLORS.greyscale900
-            }]}>4.8 (3.279 reviews)</Text>
-          </View>
-          <TouchableOpacity onPress={() => navigation.navigate("EstateReviews")}>
-            <Text style={styles.seeAll}>See All</Text>
-          </TouchableOpacity>
-        </View>
-
-        <ReviewCard
-          avatar={images.user1}
-          name="Maria Thompson"
-          description="The location of this apartment is exceptional! The neighborhood is very friendly and convenient. Highly recommended! 😍"
-          rating="4.8"
-          avgRating="5"
-          date="2024-01-23T04:52:06.501Z"
-          numLikes="948"
-        />
       </View>
     )
   }
 
   return (
     <View style={[styles.area,
-    { backgroundColor: dark ? COLORS.dark1 : COLORS.white }]}>
+    { backgroundColor: "#fff" }]}>
       <StatusBar hidden />
       <AutoSlider images={sliderImages} />
       {renderHeader()}
@@ -336,101 +149,28 @@ const EstateDetails = ({ navigation }) => {
         {renderContent()}
       </ScrollView>
       <View style={[styles.bookBottomContainer, {
-        backgroundColor: dark ? COLORS.dark1 : COLORS.white,
-        borderTopColor: dark ? COLORS.dark1 : COLORS.white,
+        backgroundColor: COLORS.blue,
+        borderTopColor: COLORS.blue,
       }]}>
         <View style={styles.priceContainer}>
           <Text style={[styles.priceText, {
-            color: dark ? COLORS.grayscale400 : COLORS.grayscale700,
-          }]}>Price</Text>
+            color: COLORS.white,
+          }]}>Prix</Text>
           <View style={styles.priceDurationContainer}>
             <Text style={styles.price}>$29{" "}</Text>
             <Text style={[styles.priceDuration, {
-              color: dark ? COLORS.grayscale400 : COLORS.grayscale700,
+              color: COLORS.white,
             }]}>/ night</Text>
           </View>
         </View>
         <Button
-          title="Booking Now"
+          title="Reserver une visite"
           filled
           style={styles.bookingBtn}
-          onPress={() => navigation.navigate("Booking")}
+          onPress={() => setModalVisible(true)}
         />
+        {renderModal()}
       </View>
-
-      <RBSheet
-        ref={refRBSheet}
-        closeOnDragDown={true}
-        closeOnPressMask={false}
-        height={360}
-        customStyles={{
-          wrapper: {
-            backgroundColor: "rgba(0,0,0,0.5)",
-          },
-          draggableIcon: {
-            backgroundColor: dark ? COLORS.dark3 : COLORS.grayscale200,
-          },
-          container: {
-            borderTopRightRadius: 32,
-            borderTopLeftRadius: 32,
-            height: 360,
-            backgroundColor: dark ? COLORS.dark2 : COLORS.white,
-            alignItems: "center",
-          }
-        }}
-      >
-        <Text style={[styles.bottomTitle, {
-          color: dark ? COLORS.white : COLORS.greyscale900
-        }]}>Share</Text>
-        <View style={[styles.separateLine, {
-          backgroundColor: dark ? COLORS.grayscale700 : COLORS.grayscale200,
-          marginVertical: 12
-        }]} />
-        <View style={styles.socialContainer}>
-          <SocialIcon
-            icon={socials.whatsapp}
-            name="WhatsApp"
-            onPress={() => console.log("WhatsApp")}
-          />
-          <SocialIcon
-            icon={socials.twitter}
-            name="X"
-            onPress={() => console.log("Twitter")}
-          />
-          <SocialIcon
-            icon={socials.facebook}
-            name="Facebook"
-            onPress={() => console.log("Facebook")}
-          />
-          <SocialIcon
-            icon={socials.instagram}
-            name="Instagram"
-            onPress={() => console.log("Instagram")}
-          />
-        </View>
-        <View style={styles.socialContainer}>
-          <SocialIcon
-            icon={socials.yahoo}
-            name="Yahoo"
-            onPress={() => console.log("Yahoo")}
-          />
-          <SocialIcon
-            icon={socials.titktok}
-            name="Tiktok"
-            onPress={() => console.log("Tiktok")}
-          />
-          <SocialIcon
-            icon={socials.messenger}
-            name="Chat"
-            onPress={() => console.log("Chat")}
-          />
-          <SocialIcon
-            icon={socials.wechat}
-            name="Wechat"
-            onPress={() => console.log("Wechat")}
-          />
-        </View>
-      </RBSheet>
     </View>
   )
 };
@@ -453,7 +193,7 @@ const styles = StyleSheet.create({
   backIcon: {
     width: 24,
     height: 24,
-    tintColor: COLORS.black
+    tintColor: COLORS.blue
   },
   bookmarkIcon: {
     width: 24,
@@ -742,7 +482,7 @@ const styles = StyleSheet.create({
     paddingVertical: 16,
     borderTopRightRadius: 32,
     borderTopLeftRadius: 32,
-    borderTopColor: COLORS.white,
+    borderTopColor: COLORS.blue,
     borderTopWidth: 1,
   },
   priceContainer: {
@@ -760,7 +500,7 @@ const styles = StyleSheet.create({
   },
   price: {
     fontFamily: "bold",
-    color: COLORS.primary,
+    color: COLORS.white,
     fontSize: 26
   },
   priceDuration: {
@@ -789,6 +529,40 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     marginVertical: 12,
     width: SIZES.width - 32
+  },
+  modalTitle: {
+    fontSize: 24,
+    fontFamily: "bold",
+    color: COLORS.primary,
+    textAlign: "center",
+    marginVertical: 12
+  },
+  modalSubtitle: {
+    fontSize: 16,
+    fontFamily: "regular",
+    color: COLORS.greyscale600,
+    textAlign: "center",
+    marginVertical: 12
+  },
+  modalContainer: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "rgba(0,0,0,0.4)"
+  },
+  modalSubContainer: {
+    height: 494,
+    width: SIZES.width * 0.9,
+    backgroundColor: COLORS.white,
+    borderRadius: 12,
+    alignItems: "center",
+    justifyContent: "center",
+    padding: 16
+  },
+  modalIllustration: {
+    height: 180,
+    width: 180,
+    marginVertical: 22
   }
 })
 

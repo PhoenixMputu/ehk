@@ -12,14 +12,13 @@ const CreateNewPIN = ({ navigation }) => {
     const { colors, dark } = useTheme();
 
     return (
-        <SafeAreaView style={[styles.area, { backgroundColor: colors.background }]}>
-            <View style={[styles.container, { backgroundColor: colors.background }]}>
+        <SafeAreaView style={[styles.area, { backgroundColor: "#fff" }]}>
+            <View style={[styles.container, { backgroundColor: "#fff" }]}>
                 <Header title="Create New PIN" />
                 <ScrollView contentContainerStyle={styles.center}>
                     <Text style={[styles.title, {
-                        color: dark ? COLORS.white : COLORS.greyscale900
-                    }]}>Add a PIN number to make your account
-                        more secure.</Text>
+                        color: COLORS.greyscale900
+                    }]}>Ajoutez un code PIN pour rendre votre compte plus sécurisé.</Text>
                     <OtpInput
                         numberOfDigits={4}
                         onTextChange={(text) => console.log(text)}
@@ -28,15 +27,15 @@ const CreateNewPIN = ({ navigation }) => {
                         onFilled={(text) => console.log(`OTP is ${text}`)}
                         theme={{
                             pinCodeContainerStyle: {
-                                backgroundColor: dark ? COLORS.dark2 : COLORS.secondaryWhite,
-                                borderColor: dark ? COLORS.gray : COLORS.secondaryWhite,
+                                backgroundColor: COLORS.secondaryWhite,
+                                borderColor: COLORS.secondaryWhite,
                                 borderWidth: .4,
                                 borderRadius: 10,
                                 height: 58,
                                 width: 58,
                             },
                             pinCodeTextStyle: {
-                                color: dark ? COLORS.white : COLORS.black,
+                                color: COLORS.black,
                             }
                         }}
                     />

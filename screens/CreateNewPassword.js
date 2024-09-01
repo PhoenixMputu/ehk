@@ -8,7 +8,6 @@ import { validateInput } from '../utils/actions/formActions';
 import Input from '../components/Input';
 import Checkbox from 'expo-checkbox';
 import Button from '../components/Button';
-import { useTheme } from '../theme/ThemeProvider';
 
 const isTestMode = true;
 
@@ -29,7 +28,6 @@ const CreateNewPassword = ({ navigation }) => {
   const [error, setError] = useState(null);
   const [isChecked, setChecked] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
-  const { colors, dark } = useTheme();
 
   const inputChangedHandler = useCallback(
     (inputId, inputValue) => {
@@ -56,17 +54,17 @@ const CreateNewPassword = ({ navigation }) => {
           onPress={() => setModalVisible(false)}>
           <View style={[styles.modalContainer]}>
             <View style={[styles.modalSubContainer, {
-              backgroundColor: dark ? COLORS.dark2 : COLORS.secondaryWhite
+              backgroundColor: COLORS.secondaryWhite
             }]}>
               <Image
                 source={illustrations.passwordSuccess}
                 resizeMode='contain'
                 style={styles.modalIllustration}
               />
-              <Text style={styles.modalTitle}>Congratulations!</Text>
-              <Text style={styles.modalSubtitle}>Your account is ready to use. You will be redirected to the Home page in a few seconds..</Text>
+              <Text style={styles.modalTitle}>Félicitations!</Text>
+              <Text style={styles.modalSubtitle}>Votre compte est prêt à être utilisé. Vous serez redirigé vers la page d'accueil dans quelques secondes.</Text>
               <Button
-                title="Continue"
+                title="Continuer"
                 filled
                 onPress={() => {
                   setModalVisible(false)
@@ -85,26 +83,26 @@ const CreateNewPassword = ({ navigation }) => {
   }
 
   return (
-    <SafeAreaView style={[styles.area, { backgroundColor: colors.background }]}>
-      <View style={[styles.container, { backgroundColor: colors.background }]}>
+    <SafeAreaView style={[styles.area, { backgroundColor: "#fff" }]}>
+      <View style={[styles.container, { backgroundColor: "#fff" }]}>
         <Header title="Create New Password" />
         <ScrollView showsVerticalScrollIndicator={false}>
           <View style={styles.logoContainer}>
             <Image
-              source={dark ? illustrations.passwordSuccessDark : illustrations.newPassword}
+              source={illustrations.newPassword}
               resizeMode='contain'
               style={styles.success} />
           </View>
           <Text style={[styles.title, {
-            color: dark ? COLORS.white : COLORS.black
-          }]}>Create Your New Password</Text>
+            color: COLORS.black
+          }]}>Créez votre nouveau mot de passe</Text>
           <Input
             onInputChanged={inputChangedHandler}
             errorText={formState.inputValidities['newPassword']}
             autoCapitalize="none"
             id="newPassword"
             placeholder="New Password"
-            placeholderTextColor={dark ? COLORS.grayTie : COLORS.black}
+            placeholderTextColor={COLORS.black}
             icon={icons.padlock}
             secureTextEntry={true}
           />
@@ -114,7 +112,7 @@ const CreateNewPassword = ({ navigation }) => {
             autoCapitalize="none"
             id="confirmNewPassword"
             placeholder="Confirm New Password"
-            placeholderTextColor={dark ? COLORS.grayTie : COLORS.black}
+            placeholderTextColor={COLORS.black}
             icon={icons.padlock}
             secureTextEntry={true}
           />
@@ -123,13 +121,13 @@ const CreateNewPassword = ({ navigation }) => {
               <Checkbox
                 style={styles.checkbox}
                 value={isChecked}
-                color={isChecked ? COLORS.primary : dark ? COLORS.primary : "gray"}
+                color="gray"
                 onValueChange={setChecked}
               />
               <View style={{ flex: 1 }}>
                 <Text style={[styles.privacy, {
-                  color: dark ? COLORS.white : COLORS.black
-                }]}>Remenber me</Text>
+                  color: COLORS.black
+                }]}>Se souvenir de moi</Text>
               </View>
             </View>
           </View>
@@ -137,7 +135,7 @@ const CreateNewPassword = ({ navigation }) => {
           </View>
         </ScrollView>
         <Button
-          title="Continue"
+          title="Continuer"
           filled
           onPress={() => setModalVisible(true)}
           style={styles.button}

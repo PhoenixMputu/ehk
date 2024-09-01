@@ -1,7 +1,6 @@
 import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import React, { useState } from 'react';
 import { COLORS, SIZES, icons } from '../constants';
-import { FontAwesome } from '@expo/vector-icons';
 import { useTheme } from '../theme/ThemeProvider';
 
 const HorizontalEstateCard = ({
@@ -19,7 +18,7 @@ const HorizontalEstateCard = ({
         <TouchableOpacity
             onPress={onPress}
             style={[styles.container, {
-                backgroundColor: dark ? COLORS.dark2 : COLORS.white
+                backgroundColor: "#bfdbfe"
             }]}>
             <Image
                 source={image}
@@ -27,30 +26,22 @@ const HorizontalEstateCard = ({
                 style={styles.image}
             />
             <View style={styles.reviewContainer}>
-                <FontAwesome name="star" size={12} color="orange" />
                 <Text style={styles.rating}>{rating}</Text>
             </View>
             <View style={styles.columnContainer}>
                 <View style={styles.topViewContainer}>
-                    <Text style={[styles.name, {
-                        color: dark ? COLORS.secondaryWhite : COLORS.greyscale900
+                    <Text numberOfLines={2} style={[styles.name, {
+                        color: "#172554",
                     }]}>{name}</Text>
-                    <TouchableOpacity onPress={() => setIsFavourite(!isFavourite)}>
-                        <Image
-                            source={isFavourite ? icons.heart2 : icons.heart2Outline}
-                            resizeMode='contain'
-                            style={styles.heartIcon}
-                        />
-                    </TouchableOpacity>
                 </View>
                 <View style={styles.bottomViewContainer}>
                     <Text style={[styles.location, {
-                        color: dark ? COLORS.greyscale300 : COLORS.grayscale700
+                        color: "#1e3a8a",
                     }]}>{location}</Text>
                     <View style={styles.priceContainer}>
                         <Text style={styles.price}>${price}</Text>
                         <Text style={[styles.durationText, {
-                            color: dark ? COLORS.greyscale300 : COLORS.grayscale700
+                            color: "#1e3a8a",
                         }]}> / night</Text>
                     </View>
                 </View>
@@ -85,7 +76,7 @@ const styles = StyleSheet.create({
         fontFamily: "bold",
         color: COLORS.greyscale900,
         marginVertical: 4,
-        marginRight: 40
+        marginRight: 40,
     },
     location: {
         fontSize: 12,
@@ -118,9 +109,9 @@ const styles = StyleSheet.create({
         position: "absolute",
         top: 16,
         left: 54,
-        width: 46,
-        height: 20,
         borderRadius: 16,
+        paddingHorizontal: 6,
+        paddingVertical: 3,
         backgroundColor: COLORS.transparentWhite2,
         zIndex: 999,
         flexDirection: "row",
@@ -131,7 +122,6 @@ const styles = StyleSheet.create({
         fontSize: 12,
         fontFamily: "semiBold",
         color: COLORS.primary,
-        marginLeft: 4
     },
     topViewContainer: {
         flexDirection: "row",

@@ -10,7 +10,7 @@ const Header = ({ title }) => {
 
   return (
     <View style={[styles.container, {
-      backgroundColor: dark ? COLORS.dark1 : COLORS.white
+      backgroundColor: "#fff"
     }]}>
       <TouchableOpacity
         onPress={() => navigation.goBack()}>
@@ -18,11 +18,11 @@ const Header = ({ title }) => {
           source={icons.back}
           resizeMode='contain'
           style={[styles.backIcon, {
-            tintColor: colors.text
+            tintColor: "#000"
           }]} />
       </TouchableOpacity>
       <Text style={[styles.title, {
-        color: colors.text
+        color: colors.black
       }]}>{title}</Text>
     </View>
   )

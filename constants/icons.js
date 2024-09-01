@@ -1,5 +1,6 @@
 const addFileOutline = require("../assets/icons/add-file-outline.png");
 const addFile = require("../assets/icons/add-file.png");
+const add = require("../assets/images/addIcon.png");
 const arrowBack = require("../assets/icons/arrow-back.png");
 const arrowDown = require("../assets/icons/arrow-down.png");
 const arrowRight = require("../assets/icons/arrow-right.png"); 
@@ -233,6 +234,7 @@ const location5 = require("../assets/icons/location5.png");
 export default {
     addFileOutline,
     addFile,
+    add,
     arrowBack,
     arrowDown,
     arrowRight,

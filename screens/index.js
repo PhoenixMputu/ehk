@@ -1,12 +1,6 @@
-import Onboarding1 from "./Onboarding1";
-import Onboarding2 from "./Onboarding2";
-import Onboarding3 from "./Onboarding3";
-import Onboarding4 from "./Onboarding4";
-import Welcome from "./Welcome";
 import Login from "./Login";
 import Signup from "./Signup";
 import ForgotPasswordEmail from "./ForgotPasswordEmail";
-import ForgotPasswordMethods from "./ForgotPasswordMethods";
 import ForgotPasswordPhoneNumber from "./ForgotPasswordPhoneNumber";
 import OTPVerification from "./OTPVerification";
 import CreateNewPassword from "./CreateNewPassword";
@@ -50,15 +44,9 @@ import CancelBooking from "./CancelBooking";
 import CancelBookingPaymentMethods from "./CancelBookingPaymentMethods";
 
 export {
-    Onboarding1,
-    Onboarding2,
-    Onboarding3,
-    Onboarding4,
-    Welcome,
     Login,
     Signup,
     ForgotPasswordEmail,
-    ForgotPasswordMethods,
     ForgotPasswordPhoneNumber,
     OTPVerification,
     CreateNewPassword,

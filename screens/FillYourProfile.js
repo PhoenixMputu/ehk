@@ -175,8 +175,8 @@ const FillYourProfile = ({ navigation }) => {
   }
 
   return (
-    <SafeAreaView style={[styles.area, { backgroundColor: colors.background }]}>
-      <View style={[styles.container, { backgroundColor: colors.background }]}>
+    <SafeAreaView style={[styles.area, { backgroundColor: "#fff" }]}>
+      <View style={[styles.container, { backgroundColor: "#fff" }]}>
         <Header title="Fill Your Profile" />
         <ScrollView showsVerticalScrollIndicator={false}>
           <View style={{ alignItems: "center", marginVertical: 12 }}>
@@ -220,8 +220,8 @@ const FillYourProfile = ({ navigation }) => {
             }}>
               <TouchableOpacity
                 style={[styles.inputBtn, {
-                  backgroundColor: dark ? COLORS.dark2 : COLORS.greyscale500,
-                  borderColor: dark ? COLORS.dark2 : COLORS.greyscale500,
+                  backgroundColor: COLORS.tansparentPrimary,
+                  borderColor: COLORS.greyscale500,
                 }]}
                 onPress={handleOnPressStartDate}
               >
@@ -230,8 +230,8 @@ const FillYourProfile = ({ navigation }) => {
               </TouchableOpacity>
             </View>
             <View style={[styles.inputContainer, {
-              backgroundColor: dark ? COLORS.dark2 : COLORS.greyscale500,
-              borderColor: dark ? COLORS.dark2 : COLORS.greyscale500,
+              backgroundColor: COLORS.tansparentPrimary,
+              borderColor: COLORS.greyscale500,
             }]}>
               <TouchableOpacity
                 style={styles.selectFlagContainer}
@@ -276,18 +276,18 @@ const FillYourProfile = ({ navigation }) => {
       {RenderAreasCodesModal()}
       <View style={styles.bottomContainer}>
         <Button
-          title="Skip"
+          title="Annuler"
           style={{
             width: (SIZES.width - 32) / 2 - 8,
             borderRadius: 32,
-            backgroundColor: dark ? COLORS.dark3 : COLORS.tansparentPrimary,
-            borderColor: dark ? COLORS.dark3 : COLORS.tansparentPrimary
+            backgroundColor: COLORS.tansparentPrimary,
+            borderColor: COLORS.tansparentPrimary
           }}
-          textColor={dark ? COLORS.white : COLORS.primary}
+          textColor={COLORS.primary}
           onPress={() => navigation.navigate("CreateNewPIN")}
         />
         <Button
-          title="Continue"
+          title="Continuer"
           filled
           style={styles.continueButton}
           onPress={() => navigation.navigate("CreateNewPIN")}

@@ -2,13 +2,11 @@ import { View, StyleSheet, TouchableOpacity, Image, Text, FlatList } from 'react
 import React, { useState } from 'react';
 import { COLORS, SIZES, icons } from "../constants";
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useTheme } from '../theme/ThemeProvider';
 import { ScrollView } from 'react-native-virtualized-view';
 import { category, recommendedEstates } from '../data';
 import VerticalEstateCard from '../components/VerticalEstateCard';
 
 const OurRecommendation = ({ navigation }) => {
-  const { dark, colors } = useTheme();
   /**
  * Render header
  */
@@ -22,25 +20,16 @@ const OurRecommendation = ({ navigation }) => {
               source={icons.back}
               resizeMode='contain'
               style={[styles.backIcon, {
-                tintColor: dark ? COLORS.white : COLORS.greyscale900
+                tintColor: COLORS.greyscale900
               }]}
             />
           </TouchableOpacity>
           <Text style={[styles.headerTitle, {
-            color: dark ? COLORS.white : COLORS.greyscale900
+            color: COLORS.greyscale900
           }]}>
-            Our Recommendation
+            Populaire
           </Text>
         </View>
-        <TouchableOpacity>
-          <Image
-            source={icons.moreCircle}
-            resizeMode='contain'
-            style={[styles.moreIcon, {
-              tintColor: dark ? COLORS.white : COLORS.greyscale900
-            }]}
-          />
-        </TouchableOpacity>
       </View>
     )
   }
@@ -65,7 +54,7 @@ const OurRecommendation = ({ navigation }) => {
         }}
         onPress={() => toggleCategory(item.id)}>
         <Text style={{
-          color: selectedCategories.includes(item.id) ? COLORS.white : COLORS.primary
+          color: selectedCategories.includes(item.id) ? COLORS.white : COLORS.primary,
         }}>{item.name}</Text>
       </TouchableOpacity>
     );
@@ -94,7 +83,7 @@ const OurRecommendation = ({ navigation }) => {
           renderItem={renderCategoryItem}
         />
         <View style={{
-          backgroundColor: dark ? COLORS.dark1 : COLORS.secondaryWhite,
+          backgroundColor: COLORS.white,
           marginVertical: 16
         }}>
           <FlatList
@@ -120,8 +109,8 @@ const OurRecommendation = ({ navigation }) => {
     )
   }
   return (
-    <SafeAreaView style={[styles.area, { backgroundColor: colors.background }]}>
-      <View style={[styles.container, { backgroundColor: colors.background }]}>
+    <SafeAreaView style={[styles.area, { backgroundColor: "#fff"}]}>
+      <View style={[styles.container, { backgroundColor:"#fff" }]}>
         {renderHeader()}
         <ScrollView showsVerticalScrollIndicator={false}>
           {renderContent()}

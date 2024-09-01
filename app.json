@@ -7,9 +7,10 @@
     "icon": "./assets/images/icon.png",
     "userInterfaceStyle": "automatic",
     "splash": {
-      "image": "./assets/images/splash.png",
+      "image": "./assets/images/Logo_EHK.png",
       "resizeMode": "contain",
-      "backgroundColor": "#246BFD"
+      "backgroundColor": "#fff",
+      "contentFit": "contain"
     },
     "assetBundlePatterns": [
       "**/*"
@@ -21,7 +22,8 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#246BFD"
-      }
+      },
+      "package": "com.victory23.Atlantis"
     },
     "web": {
       "favicon": "./assets/images/favicon.png"
