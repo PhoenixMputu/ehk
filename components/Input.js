@@ -1,11 +1,9 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, TextInput, Image } from 'react-native';
 import { COLORS, SIZES } from '../constants';
-import { useTheme } from '../theme/ThemeProvider';
 
 const Input = (props) => {
   const [isFocused, setIsFocused] = useState(false);
-  const { dark } = useTheme();
 
   const handleFocus = () => {
     setIsFocused(true);
