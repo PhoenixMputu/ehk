@@ -6,9 +6,12 @@ import { FONTS } from './constants/fonts'
 import AppNavigation from './navigations/AppNavigation'
 import { LogBox } from 'react-native'
 import { ThemeProvider } from './theme/ThemeProvider'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+
+const queryClient = new QueryClient()
 
 //Ignore all log notifications
-LogBox.ignoreAllLogs();
+LogBox.ignoreAllLogs()
 
 SplashScreen.preventAutoHideAsync()
 
@@ -16,20 +19,22 @@ export default function App() {
   const [fontsLoaded] = useFonts(FONTS)
 
   const onLayoutRootView = useCallback(async () => {
-      if (fontsLoaded) {
-          await SplashScreen.hideAsync()
-      }
+    if (fontsLoaded) {
+      await SplashScreen.hideAsync()
+    }
   }, [fontsLoaded])
 
   if (!fontsLoaded) {
-      return null
+    return null
   }
 
   return (
     <ThemeProvider>
       <SafeAreaProvider onLayout={onLayoutRootView}>
-        <AppNavigation />
+        <QueryClientProvider client={queryClient}>
+          <AppNavigation />
+        </QueryClientProvider>
       </SafeAreaProvider>
     </ThemeProvider>
-  );
+  )
 }

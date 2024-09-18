@@ -12,6 +12,8 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import { COLORS, SIZES, icons, images } from '../constants'
 import { reducer } from '../utils/reducers/formReducers'
 import { validateInput } from '../utils/actions/formActions'
+import { useCheckUser } from '../hooks/api';
+import { verifyUser } from '../services/api';
 import Input from '../components/Input'
 import Button from '../components/Button'
 
@@ -37,6 +39,34 @@ const Signup = ({ navigation }) => {
     },
     [dispatchFormState]
   )
+
+  //const { mutate: verifyUserMutation, isLoading, error, data } = useCheckUser();
+
+  const handleSubmit = async () => {
+    // Vérification des mots de passe
+    if (formState.inputValues.password !== formState.inputValues.confirmPassword) {
+      Alert.alert("Les mots de passe ne sont pas identiques !");
+      return;
+    }
+
+    // Validation du formulaire
+    if (formState.formIsValid) {
+      try {
+        // Appel de l'API pour vérifier l'utilisateur
+        const result = await verifyUser(formState.inputValues.email);
+        
+        if (result && result.id) {
+          Alert.alert('Succès', "L'email est déjà associé à un compte");
+        } else {
+          Alert.alert('Erreur', 'Utilisateur introuvable ou erreur inconnue');
+        }
+      } catch (error) {
+        Alert.alert('Erreur', error.message);
+      }
+    } else {
+      Alert.alert('Validation échouée', 'Veuillez vérifier les informations');
+    }
+  };
 
   return (
     <SafeAreaView style={[styles.area, { backgroundColor: '#fff' }]}>
@@ -91,7 +121,7 @@ const Signup = ({ navigation }) => {
           <Button
             title="S'inscrire"
             filled
-            onPress={() => navigation.navigate('FillYourProfile')}
+            onPress={handleSubmit}
             style={styles.button}
           />
         </ScrollView>
