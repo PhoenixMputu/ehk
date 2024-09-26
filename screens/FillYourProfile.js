@@ -1,58 +1,71 @@
-import { View, Text, StyleSheet, ScrollView, Alert, Image, TouchableOpacity, Modal, TouchableWithoutFeedback, FlatList, TextInput } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  ScrollView,
+  Alert,
+  Image,
+  TouchableOpacity,
+  Modal,
+  TouchableWithoutFeedback,
+  FlatList,
+  ActivityIndicator,
+} from 'react-native'
+import { Picker } from '@react-native-picker/picker'
 import React, { useCallback, useEffect, useReducer, useState } from 'react'
-import { COLORS, SIZES, FONTS, icons } from '../constants';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import Header from '../components/Header';
-import { reducer } from '../utils/reducers/formReducers';
-import { validateInput } from '../utils/actions/formActions';
-import { MaterialCommunityIcons, Feather, Ionicons } from "@expo/vector-icons";
-import { launchImagePicker } from '../utils/ImagePickerHelper';
-import Input from '../components/Input';
-import { getFormatedDate } from "react-native-modern-datepicker";
-import DatePickerModal from '../components/DatePickerModal';
-import Button from '../components/Button';
-import { useTheme } from '../theme/ThemeProvider';
-
-const isTestMode = true;
+import { COLORS, SIZES, FONTS, icons } from '../constants'
+import { SafeAreaView } from 'react-native-safe-area-context'
+import Header from '../components/Header'
+import { reducer } from '../utils/reducers/formReducers'
+import { validateInput } from '../utils/actions/formActions'
+import { MaterialCommunityIcons, Feather, Ionicons } from '@expo/vector-icons'
+import { launchImagePicker } from '../utils/ImagePickerHelper'
+import Input from '../components/Input'
+import { getFormatedDate } from 'react-native-modern-datepicker'
+import DatePickerModal from '../components/DatePickerModal'
+import Button from '../components/Button'
+import province from '../constants/province.json'
+import useUserStore from '../utils/store'
+import { uploadImageCloudinary, signup } from '../services/api'
 
 const initialState = {
   inputValues: {
-    fullName: isTestMode ? 'John Doe' : '',
-    email: isTestMode ? 'example@gmail.com' : '',
-    nickname: isTestMode ? "" : "",
-    phoneNumber: ''
+    firstname: '',
+    lastname: '',
+    phoneNumber: '',
   },
   inputValidities: {
-    fullName: false,
-    email: false,
-    nickname: false,
+    firstname: false,
+    lastname: false,
     phoneNumber: false,
   },
   formIsValid: false,
 }
 
-
 const FillYourProfile = ({ navigation }) => {
-  const [image, setImage] = useState(null);
-  const [error, setError] = useState();
-  const [formState, dispatchFormState] = useReducer(reducer, initialState);
-  const [areas, setAreas] = useState([]);
-  const [selectedArea, setSelectedArea] = useState(null);
-  const [modalVisible, setModalVisible] = useState(false);
-  const [openStartDatePicker, setOpenStartDatePicker] = useState(false);
-  const { colors, dark } = useTheme();
+  const [image, setImage] = useState(null)
+  const [uploading, setUploading] = useState(false)
+  const [error, setError] = useState()
+  const [sex, setSex] = useState('M')
+  const [formState, dispatchFormState] = useReducer(reducer, initialState)
+  const [areas, setAreas] = useState([])
+  const [selectedArea, setSelectedArea] = useState(null)
+  const [modalVisible, setModalVisible] = useState(false)
+  const [openStartDatePicker, setOpenStartDatePicker] = useState(false)
+  const { user, loadUserFromStorage } = useUserStore()
 
-  const today = new Date();
+  const today = new Date()
   const startDate = getFormatedDate(
     new Date(today.setDate(today.getDate() + 1)),
-    "YYYY/MM/DD"
-  );
+    'YYYY/MM/DD'
+  )
 
-  const [startedDate, setStartedDate] = useState("12/12/2023");
+  const [startedDate, setStartedDate] = useState('12/12/2023')
+  console.log('Test' + startedDate)
 
   const handleOnPressStartDate = () => {
-    setOpenStartDatePicker(!openStartDatePicker);
-  };
+    setOpenStartDatePicker(!openStartDatePicker)
+  }
 
   const inputChangedHandler = useCallback(
     (inputId, inputValue) => {
@@ -74,97 +87,73 @@ const FillYourProfile = ({ navigation }) => {
 
       if (!tempUri) return
 
-      // set the image
       setImage({ uri: tempUri })
-    } catch (error) { }
-  };
+    } catch (error) {
+      Alert.alert("Impossible de charger l'image. Veuillez réessayer.")
+    }
+  }
 
-  // fectch codes from rescountries api
   useEffect(() => {
-    fetch("https://restcountries.com/v2/all")
-      .then(response => response.json())
-      .then(data => {
-        let areaData = data.map((item) => {
-          return {
-            code: item.alpha2Code,
-            item: item.name,
-            callingCode: `+${item.callingCodes[0]}`,
-            flag: `https://flagsapi.com/${item.alpha2Code}/flat/64.png`
-          }
-        });
+    let areaData = province.map((item) => {
+      return {
+        id: item.id,
+        item: item.name,
+      }
+    })
 
-        setAreas(areaData);
-        if (areaData.length > 0) {
-          let defaultData = areaData.filter((a) => a.code == "US");
-
-          if (defaultData.length > 0) {
-            setSelectedArea(defaultData[0])
-          }
-        }
-      })
+    setAreas(areaData)
   }, [])
 
-  // render countries codes modal
   function RenderAreasCodesModal() {
-
     const renderItem = ({ item }) => {
       return (
         <TouchableOpacity
           style={{
             padding: 10,
-            flexDirection: "row"
+            flexDirection: 'row',
           }}
           onPress={() => {
             setSelectedArea(item),
+              console.log(selectedArea),
               setModalVisible(false)
           }}
         >
-          <Image
-            source={{ uri: item.flag }}
-            contentFit='contain'
-            style={{
-              height: 30,
-              width: 30,
-              marginRight: 10
-            }}
-          />
-          <Text style={{ fontSize: 16, color: "#fff" }}>{item.item}</Text>
+          <Text style={{ fontSize: 16, color: '#fff' }}>{item.item}</Text>
         </TouchableOpacity>
       )
     }
     return (
-      <Modal
-        animationType="slide"
-        transparent={true}
-        visible={modalVisible}
-      >
-        <TouchableWithoutFeedback
-          onPress={() => setModalVisible(false)}
-        >
+      <Modal animationType="slide" transparent={true} visible={modalVisible}>
+        <TouchableWithoutFeedback onPress={() => setModalVisible(false)}>
           <View
-            style={{ flex: 1, alignItems: "center", justifyContent: "center" }}
+            style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}
           >
             <View
               style={{
                 height: SIZES.height,
                 width: SIZES.width,
                 backgroundColor: COLORS.primary,
-                borderRadius: 12
+                borderRadius: 12,
               }}
             >
               <TouchableOpacity
                 onPress={() => setModalVisible(false)}
-                style={styles.closeBtn}>
-                <Ionicons name="close-outline" size={24} color={COLORS.primary} />
+                style={styles.closeBtn}
+              >
+                <Ionicons
+                  name="close-outline"
+                  size={24}
+                  color={COLORS.primary}
+                />
               </TouchableOpacity>
               <FlatList
                 data={areas}
                 renderItem={renderItem}
                 horizontal={false}
-                keyExtractor={(item) => item.code}
+                keyExtractor={(item) => item.id}
                 style={{
                   padding: 20,
-                  marginBottom: 20
+                  marginBottom: 20,
                 }}
               />
             </View>
@@ -174,142 +163,226 @@ const FillYourProfile = ({ navigation }) => {
     )
   }
 
+  const validateForm = () => {
+    if (!formState.formIsValid) {
+      Alert.alert('Validation échouée', 'Veuillez vérifier les informations')
+      return false
+    }
+
+    if (formState.inputValues.phoneNumber.length !== 10) {
+      Alert.alert('Veuillez entrer un numéro de téléphone valide !')
+      return false
+    }
+
+    return true
+  }
+
+  const uploadAvatar = async () => {
+    if (image && image.uri) {
+      setUploading(true)
+      const formData = new FormData()
+      formData.append('file', {
+        uri: image.uri,
+        name: 'photo.jpg',
+        type: 'image/jpeg',
+      })
+
+      try {
+        const avatarUrl = await uploadImageCloudinary(formData)
+        setUploading(false)
+        return avatarUrl
+      } catch (error) {
+        setUploading(false)
+        console.error("Erreur d'upload :", error)
+        throw error
+      }
+    }
+    return ''
+  }
+
+  const handleSubmit = async () => {
+    if (!validateForm()) {
+      return
+    }
+
+    try {
+      const avatar = await uploadAvatar()
+
+      const userData = await signup({
+        email: user.email,
+        password: user.password,
+        avatar,
+        firstName: formState.inputValues.firstname,
+        lastName: formState.inputValues.lastname,
+        phoneNumber: formState.inputValues.phoneNumber,
+        province: selectedArea.id,
+        birthday: startDate,
+        sex,
+      })
+      useUserStore.getState().setUser({
+        id: userData.user.id,
+        lastName: userData.user.lastName,
+        firstName: userData.user.firstName,
+        email: userData.user.email,
+        phoneNumber: userData.user.phoneNumber,
+        avatar: userData.user.avatar,
+        birthday: userData.user.birthday,
+        sex: userData.user.sex,
+        access_token: userData.access_token,
+      });
+      navigation.navigate('CreateNewPIN')
+    } catch (error) {
+      Alert.alert("Erreur lors de l'inscription ")
+      console.error("Erreur lors de l'inscription :", error)
+    }
+  }
+
   return (
-    <SafeAreaView style={[styles.area, { backgroundColor: "#fff" }]}>
-      <View style={[styles.container, { backgroundColor: "#fff" }]}>
-        <Header title="Fill Your Profile" />
+    <SafeAreaView style={[styles.area, { backgroundColor: '#fff' }]}>
+      <View style={[styles.container, { backgroundColor: '#fff' }]}>
+        <Header title="Completer votre profil" />
         <ScrollView showsVerticalScrollIndicator={false}>
-          <View style={{ alignItems: "center", marginVertical: 12 }}>
+          {uploading && <ActivityIndicator size="large" color="#0000ff" />}
+          <View style={{ alignItems: 'center', marginVertical: 12 }}>
             <View style={styles.avatarContainer}>
               <Image
                 source={image === null ? icons.userDefault2 : image}
                 resizeMode="cover"
-                style={styles.avatar} />
-              <TouchableOpacity
-                onPress={pickImage}
-                style={styles.pickImage}>
+                style={styles.avatar}
+              />
+              <TouchableOpacity onPress={pickImage} style={styles.pickImage}>
                 <MaterialCommunityIcons
                   name="pencil-outline"
                   size={24}
-                  color={COLORS.white} />
+                  color={COLORS.white}
+                />
               </TouchableOpacity>
             </View>
           </View>
           <View>
             <Input
-              id="fullName"
+              id="firstname"
               onInputChanged={inputChangedHandler}
-              errorText={formState.inputValidities['fullName']}
-              placeholder="Full Name"
-              placeholderTextColor={COLORS.gray} />
-            <Input
-              id="nickname"
-              onInputChanged={inputChangedHandler}
-              errorText={formState.inputValidities['nickname']}
-              placeholder="Nickname"
-              placeholderTextColor={COLORS.gray} />
-            <Input
-              id="email"
-              onInputChanged={inputChangedHandler}
-              errorText={formState.inputValidities['email']}
-              placeholder="Email"
+              errorText={formState.inputValidities['firstname']}
+              placeholder="Prénom"
               placeholderTextColor={COLORS.gray}
-              keyboardType="email-address" />
-            <View style={{
-              width: SIZES.width - 32
-            }}>
-              <TouchableOpacity
-                style={[styles.inputBtn, {
+            />
+            <Input
+              id="lastname"
+              onInputChanged={inputChangedHandler}
+              errorText={formState.inputValidities['lastname']}
+              placeholder="Nom"
+              placeholderTextColor={COLORS.gray}
+            />
+            <Input
+              id="phoneNumber"
+              onInputChanged={inputChangedHandler}
+              errorText={formState.inputValidities['phoneNumber']}
+              placeholder="Téléphone"
+              placeholderTextColor={COLORS.gray}
+              keyboardType="numeric"
+            />
+            <View
+              style={[
+                styles.picker,
+                {
+                  width: SIZES.width - 32,
                   backgroundColor: COLORS.tansparentPrimary,
                   borderColor: COLORS.greyscale500,
-                }]}
+                },
+              ]}
+            >
+              <Text style={styles.pickerText}>Sexe</Text>
+              <Picker
+                style={styles.pickerStyle}
+                selectedValue={sex}
+                onValueChange={(itemValue) => setSex(itemValue)}
+              >
+                <Picker.Item label="M" value="M" />
+                <Picker.Item label="F" value="F" />
+              </Picker>
+            </View>
+            <View
+              style={{
+                width: SIZES.width - 32,
+              }}
+            >
+              <TouchableOpacity
+                style={[
+                  styles.inputBtn,
+                  {
+                    backgroundColor: COLORS.tansparentPrimary,
+                    borderColor: COLORS.greyscale500,
+                  },
+                ]}
                 onPress={handleOnPressStartDate}
               >
-                <Text style={{ ...FONTS.body4, color: COLORS.grayscale400 }}>{startedDate}</Text>
-                <Feather name="calendar" size={24} color={COLORS.grayscale400} />
+                <Text style={{ ...FONTS.body4, color: COLORS.grayscale400 }}>
+                  {startedDate}
+                </Text>
+                <Feather
+                  name="calendar"
+                  size={24}
+                  color={COLORS.grayscale400}
+                />
               </TouchableOpacity>
-            </View>
-            <View style={[styles.inputContainer, {
-              backgroundColor: COLORS.tansparentPrimary,
-              borderColor: COLORS.greyscale500,
-            }]}>
-              <TouchableOpacity
-                style={styles.selectFlagContainer}
-                onPress={() => setModalVisible(true)}>
-                <View style={{ justifyContent: "center" }}>
-                  <Image
-                    source={icons.down}
-                    resizeMode='contain'
-                    style={styles.downIcon}
-                  />
-                </View>
-                <View style={{ justifyContent: "center", marginLeft: 5 }}>
-                  <Image
-                    source={{ uri: selectedArea?.flag }}
-                    contentFit="contain"
-                    style={styles.flagIcon}
-                  />
-                </View>
-                <View style={{ justifyContent: "center", marginLeft: 5 }}>
-                  <Text style={{ color: dark ? COLORS.white : "#111", fontSize: 12 }}>{selectedArea?.callingCode}</Text>
-                </View>
-              </TouchableOpacity>
-              {/* Phone Number Text Input */}
-              <TextInput
-                style={styles.input}
-                placeholder="Enter your phone number"
-                placeholderTextColor={COLORS.gray}
-                selectionColor="#111"
-                keyboardType="numeric"
-              />
+              <View
+                style={[
+                  styles.inputContainer,
+                  {
+                    backgroundColor: COLORS.greyscale500,
+                    borderColor: COLORS.greyscale500,
+                  },
+                ]}
+              >
+                <TouchableOpacity
+                  style={styles.selectFlagContainer}
+                  onPress={() => setModalVisible(true)}
+                >
+                  <Text style={styles.placeholder}>
+                    {selectedArea
+                      ? selectedArea?.item
+                      : 'Entrer votre province'}
+                  </Text>
+                </TouchableOpacity>
+              </View>
             </View>
           </View>
         </ScrollView>
       </View>
+      {RenderAreasCodesModal()}
       <DatePickerModal
         open={openStartDatePicker}
-        startDate={startDate}
         selectedDate={startedDate}
         onClose={() => setOpenStartDatePicker(false)}
         onChangeStartDate={(date) => setStartedDate(date)}
       />
-      {RenderAreasCodesModal()}
       <View style={styles.bottomContainer}>
-        <Button
-          title="Annuler"
-          style={{
-            width: (SIZES.width - 32) / 2 - 8,
-            borderRadius: 32,
-            backgroundColor: COLORS.tansparentPrimary,
-            borderColor: COLORS.tansparentPrimary
-          }}
-          textColor={COLORS.primary}
-          onPress={() => navigation.navigate("CreateNewPIN")}
-        />
+
         <Button
           title="Continuer"
           filled
           style={styles.continueButton}
-          onPress={() => navigation.navigate("CreateNewPIN")}
+          onPress={handleSubmit}
         />
       </View>
     </SafeAreaView>
   )
-};
+}
 
 const styles = StyleSheet.create({
   area: {
     flex: 1,
-    backgroundColor: COLORS.white
+    backgroundColor: COLORS.white,
   },
   container: {
     flex: 1,
     padding: 16,
-    backgroundColor: COLORS.white
+    backgroundColor: COLORS.white,
   },
   avatarContainer: {
     marginVertical: 12,
-    alignItems: "center",
+    alignItems: 'center',
     width: 130,
     height: 130,
     borderRadius: 65,
@@ -331,9 +404,9 @@ const styles = StyleSheet.create({
     right: 0,
   },
   inputContainer: {
-    flexDirection: "row",
+    flexDirection: 'row',
     borderColor: COLORS.greyscale500,
-    borderWidth: .4,
+    borderWidth: 0.4,
     borderRadius: 12,
     height: 52,
     width: SIZES.width - 32,
@@ -344,24 +417,28 @@ const styles = StyleSheet.create({
   downIcon: {
     width: 10,
     height: 10,
-    tintColor: "#111"
+    tintColor: '#111',
   },
   selectFlagContainer: {
-    width: 90,
+    width: '100%',
     height: 50,
-    marginHorizontal: 5,
-    flexDirection: "row",
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    backgroundColor: COLORS.tansparentPrimary,
+    borderRadius: 12,
+    paddingLeft: 8,
   },
   flagIcon: {
     width: 30,
-    height: 30
+    height: 30,
   },
   input: {
     flex: 1,
     marginVertical: 10,
     height: 40,
     fontSize: 14,
-    color: "#111"
+    color: '#111',
   },
   inputBtn: {
     borderWidth: 1,
@@ -370,45 +447,64 @@ const styles = StyleSheet.create({
     height: 52,
     paddingLeft: 8,
     fontSize: 18,
-    justifyContent: "space-between",
+    justifyContent: 'space-between',
     marginTop: 4,
     backgroundColor: COLORS.greyscale500,
-    flexDirection: "row",
-    alignItems: "center",
-    paddingRight: 8
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingRight: 8,
   },
   rowContainer: {
-    flexDirection: "row",
-    justifyContent: "space-between"
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   },
   bottomContainer: {
-    position: "absolute",
+    position: 'absolute',
     bottom: 32,
     right: 16,
     left: 16,
-    flexDirection: "row",
-    justifyContent: "space-between",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     width: SIZES.width - 32,
-    alignItems: "center"
+    alignItems: 'center',
   },
   continueButton: {
-    width: (SIZES.width - 32) / 2 - 8,
+    width: '100%',
     borderRadius: 32,
     backgroundColor: COLORS.primary,
-    borderColor: COLORS.primary
+    borderColor: COLORS.primary,
   },
   closeBtn: {
     width: 42,
     height: 42,
     borderRadius: 999,
     backgroundColor: COLORS.white,
-    position: "absolute",
+    position: 'absolute',
     right: 16,
     top: 32,
-    justifyContent: "center",
-    alignItems: "center",
-    zIndex: 9999
-  }
+    justifyContent: 'center',
+    alignItems: 'center',
+    zIndex: 9999,
+  },
+  placeholder: {
+    color: COLORS.grayscale400,
+    fontSize: 14,
+  },
+  picker: {
+    flexDirection: 'row',
+    paddingHorizontal: 8,
+    borderRadius: 12,
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  pickerText: {
+    width: '100',
+    fontSize: 14,
+    color: COLORS.grayscale400,
+  },
+  pickerStyle: {
+    width: '40%',
+  },
 })
 
 export default FillYourProfile

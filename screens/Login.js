@@ -69,7 +69,6 @@ const Login = ({ navigation }) => {
       <View style={[styles.container, {
         backgroundColor: "#fff"
       }]}>
-        <Header />
         <ScrollView showsVerticalScrollIndicator={false}>
           <View style={styles.logoContainer}>
             <Image

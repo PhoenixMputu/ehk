@@ -6,14 +6,15 @@ import {
   Image,
   Alert,
   TouchableOpacity,
+  ActivityIndicator
 } from 'react-native'
 import React, { useCallback, useEffect, useReducer, useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { COLORS, SIZES, icons, images } from '../constants'
 import { reducer } from '../utils/reducers/formReducers'
 import { validateInput } from '../utils/actions/formActions'
-import { useCheckUser } from '../hooks/api';
-import { verifyUser } from '../services/api';
+import { verifyUser } from '../services/api'
+import useUserStore from '../utils/store'
 import Input from '../components/Input'
 import Button from '../components/Button'
 
@@ -31,6 +32,7 @@ const initialState = {
 
 const Signup = ({ navigation }) => {
   const [formState, dispatchFormState] = useReducer(reducer, initialState)
+  const [uploading, setUploading] = useState(false)
 
   const inputChangedHandler = useCallback(
     (inputId, inputValue) => {
@@ -40,38 +42,46 @@ const Signup = ({ navigation }) => {
     [dispatchFormState]
   )
 
-  //const { mutate: verifyUserMutation, isLoading, error, data } = useCheckUser();
-
   const handleSubmit = async () => {
-    // Vérification des mots de passe
-    if (formState.inputValues.password !== formState.inputValues.confirmPassword) {
-      Alert.alert("Les mots de passe ne sont pas identiques !");
-      return;
+    if (
+      formState.inputValues.password !== formState.inputValues.confirmPassword
+    ) {
+      Alert.alert('Les mots de passe ne sont pas identiques !')
+      return
     }
 
-    // Validation du formulaire
     if (formState.formIsValid) {
+      setUploading(true)
       try {
-        // Appel de l'API pour vérifier l'utilisateur
-        const result = await verifyUser(formState.inputValues.email);
-        
+        const result = await verifyUser(formState.inputValues.email)
         if (result && result.id) {
-          Alert.alert('Succès', "L'email est déjà associé à un compte");
+          Alert.alert('Warning', "L'email est déjà utilisé !")
+          setUploading(false)
+          return
         } else {
-          Alert.alert('Erreur', 'Utilisateur introuvable ou erreur inconnue');
+          const userData = {
+            email: formState.inputValues.email,
+            password: formState.inputValues.password,
+          }
+          useUserStore.getState().setUser(userData)
+          setUploading(false)
+          navigation.navigate('FillYourProfile')
         }
       } catch (error) {
-        Alert.alert('Erreur', error.message);
+        console.log(error)
+        setUploading(false)
+        Alert.alert('Erreur', error.message)
       }
     } else {
-      Alert.alert('Validation échouée', 'Veuillez vérifier les informations');
+      Alert.alert('Validation échouée', 'Veuillez vérifier les informations')
     }
-  };
+  }
 
   return (
     <SafeAreaView style={[styles.area, { backgroundColor: '#fff' }]}>
       <View style={[styles.container, { backgroundColor: '#fff' }]}>
         <ScrollView showsVerticalScrollIndicator={false}>
+        {uploading && <ActivityIndicator size="large" color="#0000ff" />}
           <View style={styles.logoContainer}>
             <Image
               source={images.logo_EHK}

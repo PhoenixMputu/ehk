@@ -1,27 +1,26 @@
-import React, { useState } from 'react';
-import { Modal, View, Text, TouchableOpacity, StyleSheet } from 'react-native';
-import DatePicker from "react-native-modern-datepicker";
-import { COLORS } from '../constants';
+import React, { useState } from 'react'
+import { Modal, View, Text, TouchableOpacity, StyleSheet } from 'react-native'
+import DatePicker from 'react-native-modern-datepicker'
+import { COLORS } from '../constants'
 
 const DatePickerModal = ({
   open,
-  startDate,
   selectedDate,
   onClose,
   onChangeStartDate,
 }) => {
-  const [selectedStartDate, setSelectedStartDate] = useState(selectedDate);
+  const [selectedStartDate, setSelectedStartDate] = useState(selectedDate)
 
   const handleDateChange = (date) => {
-    setSelectedStartDate(date);
-    onChangeStartDate(date);
-  };
+    setSelectedStartDate(date)
+    onChangeStartDate(date)
+  }
 
   const handleOnPressStartDate = () => {
-    onClose();
-  };
+    onClose()
+  }
 
-  const modalVisible = open;
+  const modalVisible = open
 
   return (
     <Modal animationType="slide" transparent={true} visible={modalVisible}>
@@ -29,7 +28,6 @@ const DatePickerModal = ({
         <View style={styles.modalView}>
           <DatePicker
             mode="calendar"
-            minimumDate={startDate}
             selected={selectedStartDate}
             onDateChange={handleDateChange}
             onSelectedChange={(date) => setSelectedStartDate(date)}
@@ -41,31 +39,33 @@ const DatePickerModal = ({
               mainColor: COLORS.white,
               textSecondaryColor: '#FFFFFF',
               borderColor: COLORS.primary,
-            }} />
+              textFontSize: 12
+            }}
+          />
           <TouchableOpacity onPress={handleOnPressStartDate}>
             <Text style={{ color: 'white' }}>Close</Text>
           </TouchableOpacity>
         </View>
       </View>
     </Modal>
-  );
-};
+  )
+}
 
 const styles = StyleSheet.create({
   centeredView: {
     flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   modalView: {
     margin: 20,
     backgroundColor: COLORS.primary,
-    alignItems: "center",
-    justifyContent: "center",
+    alignItems: 'center',
+    justifyContent: 'center',
     borderRadius: 20,
     padding: 35,
-    width: "90%",
-    shadowColor: "#000",
+    width: '90%',
+    shadowColor: '#000',
     shadowOffset: {
       width: 0,
       height: 2,
@@ -74,7 +74,6 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 5,
   },
-});
+})
 
-
-export default DatePickerModal;
+export default DatePickerModal

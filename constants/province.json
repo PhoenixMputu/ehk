@@ -1,0 +1,10 @@
+[
+  { "id": 1, "name": "Kinshasa" },
+  { "id": 2, "name": "Kongo-Central" },
+  { "id": 3, "name": "Kwilu" },
+  { "id": 4, "name": "Lomami" },
+  { "id": 5, "name": "Haut-Katanga" },
+  { "id": 6, "name": "Nord-Kivu" },
+  { "id": 7, "name": "Sud-Kivu" },
+  { "id": 8, "name": "Ituri" }
+]
