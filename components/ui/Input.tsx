@@ -1,4 +1,3 @@
-import React from 'react';
 import { View, TextInput, StyleSheet, TextInputProps, Text } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 import { Control, Controller, FieldValues, Path } from 'react-hook-form';

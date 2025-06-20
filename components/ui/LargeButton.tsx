@@ -1,4 +1,3 @@
-import React from 'react';
 import { Text, TouchableOpacity, StyleSheet, TouchableOpacityProps } from 'react-native';
 
 type LargeButtonProps = TouchableOpacityProps & {
