@@ -1,13 +1,14 @@
-import { Text, TouchableOpacity, StyleSheet, TouchableOpacityProps } from 'react-native';
+import { Text, TouchableOpacity, StyleSheet, TouchableOpacityProps, ActivityIndicator } from 'react-native';
 
 type LargeButtonProps = TouchableOpacityProps & {
   title: string;
+  submited: boolean;
 };
 
-export default function LargeButton({ title, ...props }: LargeButtonProps) {
+export default function LargeButton({ title, submited, ...props }: LargeButtonProps) {
   return (
     <TouchableOpacity style={styles.button} activeOpacity={0.8} {...props}>
-      <Text style={styles.text}>{title}</Text>
+      {submited ? <ActivityIndicator size={24} color='#fff' /> : <Text style={styles.text}>{title}</Text>}
     </TouchableOpacity>
   );
 }

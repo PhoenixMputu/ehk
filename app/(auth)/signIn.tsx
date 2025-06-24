@@ -1,4 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
+import { useState } from 'react';
 import { Alert, Image, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Link } from 'expo-router';
@@ -19,15 +20,19 @@ export default function SignIn() {
     handleSubmit, 
     formState: { errors, isSubmitting } 
   } = useForm<LoginForm>();
+  const [isSubmited, setIsSubmited] = useState<boolean>(false);
 
   const onSubmit = (data: LoginForm) => {
+    setIsSubmited(true);
     signInWithEmailAndPassword(auth, data.email, data.password)
       .then((userCredential) => {
         const user = userCredential.user;
         Alert.alert('Connexion réussie !', `Bonjour, ${user.email}`);
+        setIsSubmited(false)
       })
       .catch((error) => {
         Alert.alert('Échec de la connexion', error.message);
+        setIsSubmited(false)
       });
   }
 
@@ -86,6 +91,7 @@ export default function SignIn() {
         title='Se Connecter' 
         onPress={handleSubmit(onSubmit)}
         disabled={isSubmitting}
+        submited={isSubmited}
       />
       
       {/* Section "Ou" avec séparateurs */}
