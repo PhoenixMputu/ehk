@@ -1,38 +1,38 @@
+import FontAwesome from '@expo/vector-icons/FontAwesome';
+import { Link } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { useState } from 'react';
+import { useForm } from 'react-hook-form';
 import { Alert, Image, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Link } from 'expo-router';
-import { useForm } from 'react-hook-form';
-import FontAwesome from '@expo/vector-icons/FontAwesome';
 
 import Input from '@/components/ui/Input';
 import LargeButton from '@/components/ui/LargeButton';
 import { WIDTH } from '@/constants/sizes';
 
-import { LoginForm } from '@/types/form.type';
 import { auth } from '@/services/firebase';
+import { LoginForm } from '@/types/form.type';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 
 export default function SignIn() {
   const { 
     control, 
     handleSubmit, 
-    formState: { errors, isSubmitting } 
+    formState: { errors } 
   } = useForm<LoginForm>();
-  const [isSubmited, setIsSubmited] = useState<boolean>(false);
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
   const onSubmit = (data: LoginForm) => {
-    setIsSubmited(true);
+    setIsSubmitting(true);
     signInWithEmailAndPassword(auth, data.email, data.password)
       .then((userCredential) => {
         const user = userCredential.user;
         Alert.alert('Connexion réussie !', `Bonjour, ${user.email}`);
-        setIsSubmited(false)
+        setIsSubmitting(false);
       })
       .catch((error) => {
         Alert.alert('Échec de la connexion', error.message);
-        setIsSubmited(false)
+        setIsSubmitting(false);
       });
   }
 
@@ -82,7 +82,7 @@ export default function SignIn() {
           error={errors.password?.message}
         />
         
-        <Link href="/(app)/home" style={styles.forgetLink}>
+        <Link href="/signUp" style={styles.forgetLink}>
           Mot de passe oublié ?
         </Link>
       </View>
@@ -91,7 +91,7 @@ export default function SignIn() {
         title='Se Connecter' 
         onPress={handleSubmit(onSubmit)}
         disabled={isSubmitting}
-        submited={isSubmited}
+        submited={isSubmitting}
       />
       
       {/* Section "Ou" avec séparateurs */}
@@ -113,7 +113,7 @@ export default function SignIn() {
         </View>
         
         <View style={styles.socialButton}>
-          <FontAwesome name="facebook" size={28} color="black" style={styles.socialIcon} />
+          <FontAwesome name="facebook" size={24} color="#3C5A99" />
         </View>
       </View>
       
@@ -137,7 +137,8 @@ const styles = StyleSheet.create({
     width: 126,
     height: 80,
     resizeMode: 'contain',
-    marginBottom: 56
+    marginBottom: 50,
+    marginTop: 24
   },
   subTitle: {
     fontFamily: 'Inter_700Bold',
@@ -190,26 +191,23 @@ const styles = StyleSheet.create({
   },
   socialButtonsContainer: {
     flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    gap: 16,
+    gap: 24,
     width: '100%',
-    marginBottom: 32
+    marginBottom: 32,
+    justifyContent: 'center'
   },
   socialButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
+    width: 60,
+    height: 60,
+    borderRadius: 30,
     borderWidth: 1,
     borderColor: '#E0E0E0',
-    borderRadius: 100,
-    padding: 16,
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   socialIcon: {
     width: 24,
-    height: 24,
-    color: '#3C5A99',
-    textAlign: 'center'
+    height: 24
   },
   footer: {
     flexDirection: 'row',
